@@ -13,4 +13,11 @@ An interactive, canvas-based presentation tool. Rather than traditional linear s
 
 ## Current Status
 
-Project initialized. Documentation and repository structure established. No code yet.
+Technical platform scaffolded. Working Svelte 5 + Vite application with:
+- Camera system (pan/zoom via CSS transforms, animated with GSAP)
+- Canvas element positioning and lazy-loaded content components
+- Walkthrough engine (declarative step sequence, play/pause/next/prev)
+- Focus system (click-to-expand fullscreen overlay with interactive components)
+- Generative parallax background (Canvas 2D)
+- Keyboard navigation (arrows, spacebar, escape)
+- 3 placeholder slides (Title, Intro, Interactive Demo)
