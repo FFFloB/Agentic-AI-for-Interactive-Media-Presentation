@@ -5,3 +5,6 @@ Thumbs.db
 *.log
 .env
 .env.local
+
+# Session audit temp markers (not the audits themselves)
+session_audits/.*.start

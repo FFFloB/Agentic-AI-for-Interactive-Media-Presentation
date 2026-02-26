@@ -18,3 +18,5 @@ This log tracks every contribution from both Claude and the human collaborator. 
 |---|-----|-------------|
 | 1 | Human | Provided initial prompt defining the project vision: a canvas-based presentation with scripted walkthroughs, interactive focus elements, modern minimalist design, and parallax generative backgrounds. Defined documentation structure and contribution logging requirements. |
 | 2 | Claude | Created project scaffolding: `initial_prompt.md`, `CLAUDE.md`, `project_info.md`, `technical_info.md`, `design_guide.md`, `key_decisions.md`, `key_learnings.md`. Initialized git repository and made initial commit. |
+| 3 | Human | Requested automatic session audit logging — full transcripts (including thinking steps) saved to `session_audits/`, one file per session, structured JSONL, committed to git. |
+| 4 | Claude | Implemented session audit system: `.claude/hooks/audit-session.py` (copies full transcript on Stop/SessionEnd), `.claude/settings.json` (project-level hooks config), `session_audits/` directory. Updated `.gitignore` for temp markers. |
