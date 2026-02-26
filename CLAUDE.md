@@ -7,6 +7,6 @@
 
 ## Git Use
 
-- **Commit tagging**: Claude's commits use standard messages. Human commits should be identifiable — if unclear, Claude will ask.
+- **Commit tagging**: Claude's commits include a `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>` trailer. Human commits won't have this trailer. Detailed per-contribution attribution lives in `session_log.md`.
 - **Commit frequency**: Commit frequently in meaningful batches after changes. Commit updates to the session_audits separately, but only commit sessions that have been concluded - avoid tracking sessions as they are ongoing, this history is not meaningful.
 
