@@ -23,5 +23,13 @@ This file tracks every session's contributions and links to the full audit trans
 
 | # | Who | Contribution |
 |---|-----|-------------|
-| 5 | Human | Clarified session logging: session logs should live in `session_log.md` (not CLAUDE.md) and link to the respective session audit files. |
-| 6 | Claude | Created `session_log.md` with per-session contributions linking to audit files. Added "Session summaries" convention to `CLAUDE.md`. Removed contribution log from `CLAUDE.md`. |
+| 5 | Human | Clarified session logging: session logs should live in `session_log.md` (not CLAUDE.md) and link to the respective session audit files. Renamed file from `session_summary.md` to `session_log.md`. |
+| 6 | Claude | Created `session_log.md` with per-session contributions linking to audit files. Added "Session logging" convention to `CLAUDE.md`. |
+| 7 | Human | Pointed out contribution log should not remain in `CLAUDE.md`. |
+| 8 | Claude | Removed contribution log from `CLAUDE.md`, moved full contribution tables into `session_log.md` as the single source of truth. |
+| 9 | Human | Asked about inconsistent audit file naming (`_session-0-bootstrap` suffix vs auto-generated names). |
+| 10 | Claude | Explained the bootstrap file was a manual snapshot; all future files follow the hook's `{timestamp}_{8-char-id}.jsonl` pattern. |
+| 11 | Human | Asked when `session_log.md` gets updated — suggested a `/logsession` command to run at end of session. Confirmed retrospective logging from audits is fine. |
+| 12 | Claude | Created `.claude/commands/logsession.md` custom command. Updated `CLAUDE.md` convention to reference `/logsession`. |
+| 13 | Human | Asked about hooking into `/clear` to auto-run `/logsession`. |
+| 14 | Claude | Explained no hook exists for `/clear`; audit files serve as safety net for missed logging. |
