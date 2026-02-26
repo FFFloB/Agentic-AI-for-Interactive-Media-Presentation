@@ -67,3 +67,7 @@ This file tracks every session's contributions and links to the full audit trans
 | 28 | Claude | Updated `technical_info.md` with full tech stack, architecture, directory structure, and patterns. Added tech stack decision to `key_decisions.md`. Updated `project_info.md` status. |
 | 29 | Human | Requested a VS Code task for starting the dev server via Ctrl+Shift+P. |
 | 30 | Claude | Created `.vscode/tasks.json` with a "Dev Server" task running `npm run dev`. Committed separately as requested. |
+| 31 | Human | Noted that most commits are AI-generated and asked about the commit tagging convention. |
+| 32 | Claude | Confirmed the `Co-Authored-By` trailer is the mechanism distinguishing AI from human commits, with `session_log.md` capturing detailed per-contribution attribution. |
+| 33 | Human | Asked whether this was documented. |
+| 34 | Claude | Pointed out the existing `CLAUDE.md` wording was vague; updated it to explicitly reference the `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>` trailer as the tagging mechanism. |
