@@ -33,3 +33,15 @@ This file tracks every session's contributions and links to the full audit trans
 | 12 | Claude | Created `.claude/commands/logsession.md` custom command. Updated `CLAUDE.md` convention to reference `/logsession`. |
 | 13 | Human | Asked about hooking into `/clear` to auto-run `/logsession`. |
 | 14 | Claude | Explained no hook exists for `/clear`; audit files serve as safety net for missed logging. |
+
+---
+
+## Session 3 — 2026-02-26
+
+**Audit file**: [`session_audits/2026-02-26_10-53-57_070261de.jsonl`](session_audits/2026-02-26_10-53-57_070261de.jsonl)
+
+| # | Who | Contribution |
+|---|-----|-------------|
+| 15 | Human | Updated `CLAUDE.md` to add a Git Use section with commit conventions: commit frequently in meaningful batches, commit session_audits separately and only for concluded sessions. |
+| 16 | Human | Requested augmenting `/logsession` to automatically commit concluded session audit files. |
+| 17 | Claude | Updated `.claude/commands/logsession.md` with step 6: after logging, scan `session_audits/` for `.jsonl` files, check for active `.start` markers by matching 8-char IDs to UUID prefixes, and commit all concluded audits in a single separate commit. |
