@@ -45,3 +45,7 @@ This file tracks every session's contributions and links to the full audit trans
 | 15 | Human | Updated `CLAUDE.md` to add a Git Use section with commit conventions: commit frequently in meaningful batches, commit session_audits separately and only for concluded sessions. |
 | 16 | Human | Requested augmenting `/logsession` to automatically commit concluded session audit files. |
 | 17 | Claude | Updated `.claude/commands/logsession.md` with step 6: after logging, scan `session_audits/` for `.jsonl` files, check for active `.start` markers by matching 8-char IDs to UUID prefixes, and commit all concluded audits in a single separate commit. |
+| 18 | Human | Asked how two session audits can be active simultaneously. |
+| 19 | Claude | Identified three `.start` files: two stale orphans (from crashed/killed sessions) and the current session. Explained that `.start` files linger when the cleanup hook doesn't fire. |
+| 20 | Human | Chose to add stale-detection logic to `/logsession` rather than manual cleanup. |
+| 21 | Claude | Added stale-detection step to `/logsession`: before committing, identify stale `.start` files by checking if their `.jsonl` is missing or unmodified for 10+ minutes, then auto-delete them so the commit logic picks up newly-concluded audits. |

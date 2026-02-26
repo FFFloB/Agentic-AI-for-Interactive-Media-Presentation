@@ -11,13 +11,24 @@ Steps:
 5. Commit the updated `session_log.md`.
 6. Commit concluded session audit files (see below).
 
+## Cleaning up stale `.start` markers
+
+Before committing, detect and clean up stale `.start` files — orphans left behind by sessions that crashed or were killed without triggering the cleanup hook.
+
+1. Identify the current session's `.start` file (matches the current audit's 8-char ID).
+2. For every OTHER `.start` file, check the modification time of its corresponding `.jsonl` (if one exists):
+   - If no `.jsonl` exists at all → **stale** (session never produced output).
+   - If the `.jsonl` hasn't been modified in the last 10 minutes → **stale** (session is no longer writing).
+   - Otherwise → treat as active (another session may be running concurrently).
+3. Delete any stale `.start` files and report which ones were cleaned up.
+
 ## Committing concluded session audits
 
-After logging the session, automatically commit any concluded audit files:
+After cleanup, automatically commit any concluded audit files:
 
 1. List all `.jsonl` files in `session_audits/`.
 2. For each `.jsonl` file, extract the 8-char session ID from the filename (pattern: `YYYY-MM-DD_HH-MM-SS_{id}.jsonl`).
-3. Check if a matching `.start` file exists (pattern: `.{uuid}.start` where the UUID starts with that 8-char ID). If a `.start` file exists, the session is still active — skip it.
+3. Check if a matching `.start` file still exists (pattern: `.{uuid}.start` where the UUID starts with that 8-char ID). If a `.start` file exists, the session is still active — skip it.
 4. Stage and commit all concluded (no `.start` file) `.jsonl` files that have uncommitted changes, in a single commit with message: `Log concluded session audits`.
 5. Do NOT commit or stage `.start` files, `.gitkeep`, or any active session's `.jsonl`.
 
