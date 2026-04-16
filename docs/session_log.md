@@ -71,3 +71,29 @@ This file tracks every session's contributions and links to the full audit trans
 | 32 | Claude | Confirmed the `Co-Authored-By` trailer is the mechanism distinguishing AI from human commits, with `session_log.md` capturing detailed per-contribution attribution. |
 | 33 | Human | Asked whether this was documented. |
 | 34 | Claude | Pointed out the existing `CLAUDE.md` wording was vague; updated it to explicitly reference the `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>` trailer as the tagging mechanism. |
+
+---
+
+## Session 5 — 2026-04-16
+
+**Audit file**: [`session_audits/2026-04-16_10-08-34_d60ea12a.jsonl`](../session_audits/2026-04-16_10-08-34_d60ea12a.jsonl)
+
+| # | Who | Contribution |
+|---|-----|-------------|
+| 35 | Human | Shared framing for a student-facing ad: creative media production requires many interlinked skills that individuals rarely have fully, agentic AI spans these areas and acts as a complementing collaborator, with transformative implications for IM production, learning, careers, teamwork, and creation. |
+| 36 | Claude | Read the in-progress `docs/ad_for_students.md`; offered three directions (continue drafting, restructure outline, tighten typos first) and asked about audience, format, and length. |
+| 37 | Human | Chose direction 1 - continue drafting. |
+| 38 | Claude | Extended `docs/ad_for_students.md` with an agentic-AI pivot paragraph, a bulleted implications section covering the five threads (production / learning / careers / teams / creation), a "what this presentation covers" paragraph, and a "Come along" CTA. Left existing paragraph (with typos) untouched. |
+| 39 | Human | Asked to compress the five bullets to a single sentence with no detail. |
+| 40 | Claude | Collapsed the bullets into one sentence listing the threads. |
+| 41 | Human | Asked to integrate ethical / right use into the last paragraph. |
+| 42 | Claude | Wove "effectively *and responsibly*" plus ethical-lines and right-use framing into the "what this presentation covers" paragraph. |
+| 43 | Human | Asked for the whole ad to be snappier; flagged paragraph 1 as too long-winded and noted the solo-vs-team framing wasn't load-bearing since agentic AI is equally transformative either way. |
+| 44 | Claude | Rewrote paragraph 1 (dropped solo-vs-team detour, landed the skill-gap point in three sentences), tightened the agentic-AI pivot in paragraph 2, and trimmed the presentation-scope paragraph. Typos in the original paragraph fell away in the rewrite. |
+| 45 | Human | Asked for another pass and suggested improvements. |
+| 46 | Claude | Proposed four small tweaks: "tightly interlinked" cliché in p1, past-tense "behaved as" in p2, "how teams are formed" drifted from the intended "how teams work" in p3, and the sentence-fragment line at the end of p2. |
+| 47 | Human | Declined further changes - happy with the ad as is. |
+| 48 | Human | Asked to add a "no long dashes in presented content" rule to `CLAUDE.md` and pasted an edited version of the ad (em-dashes replaced with hyphens, formatting stripped), requesting the formatting be restored. |
+| 49 | Claude | Added a "Writing Style" section to `CLAUDE.md` with the no em/en-dash rule. Overwrote `docs/ad_for_students.md` with the user's edited content, restoring italic on `*agentic AI*`, italic on `*and responsibly*`, and bold on the final CTA. Saved a feedback memory for the rule and indexed it in `MEMORY.md`. |
+| 50 | Human | Asked to commit now and update the Session 5 commit to include this latest dialog. |
+| 51 | Claude | Appended contributions 48-51 to Session 5, replaced em-dashes with hyphens in the Session 5 entries I had just written, and amended the Session 5 commit to include `CLAUDE.md`, the ad update, the memory index, and the updated session log. |
