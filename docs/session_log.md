@@ -6,7 +6,7 @@ This file tracks every session's contributions and links to the full audit trans
 
 ## Session 1 — 2026-02-26 (Bootstrap)
 
-**Audit file**: [`session_audits/2026-02-26_09-35-00_a96855ed_session-0-bootstrap.jsonl`](session_audits/2026-02-26_09-35-00_a96855ed_session-0-bootstrap.jsonl)
+**Audit file**: [`session_audits/2026-02-26_09-35-00_a96855ed_session-0-bootstrap.jsonl`](../session_audits/2026-02-26_09-35-00_a96855ed_session-0-bootstrap.jsonl)
 
 | # | Who | Contribution |
 |---|-----|-------------|
@@ -19,7 +19,7 @@ This file tracks every session's contributions and links to the full audit trans
 
 ## Session 2 — 2026-02-26
 
-**Audit file**: [`session_audits/2026-02-26_10-19-14_807796bc.jsonl`](session_audits/2026-02-26_10-19-14_807796bc.jsonl)
+**Audit file**: [`session_audits/2026-02-26_10-19-14_807796bc.jsonl`](../session_audits/2026-02-26_10-19-14_807796bc.jsonl)
 
 | # | Who | Contribution |
 |---|-----|-------------|
@@ -38,7 +38,7 @@ This file tracks every session's contributions and links to the full audit trans
 
 ## Session 3 — 2026-02-26
 
-**Audit file**: [`session_audits/2026-02-26_10-53-57_070261de.jsonl`](session_audits/2026-02-26_10-53-57_070261de.jsonl)
+**Audit file**: [`session_audits/2026-02-26_10-53-57_070261de.jsonl`](../session_audits/2026-02-26_10-53-57_070261de.jsonl)
 
 | # | Who | Contribution |
 |---|-----|-------------|
@@ -54,7 +54,7 @@ This file tracks every session's contributions and links to the full audit trans
 
 ## Session 4 — 2026-02-26
 
-**Audit file**: [`session_audits/2026-02-26_11-04-41_c218603b.jsonl`](session_audits/2026-02-26_11-04-41_c218603b.jsonl)
+**Audit file**: [`session_audits/2026-02-26_11-04-41_c218603b.jsonl`](../session_audits/2026-02-26_11-04-41_c218603b.jsonl)
 
 | # | Who | Contribution |
 |---|-----|-------------|

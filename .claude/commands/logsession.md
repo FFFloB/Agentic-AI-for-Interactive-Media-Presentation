@@ -1,14 +1,14 @@
-Append the current session to `session_log.md` and commit concluded session audits.
+Append the current session to `docs/session_log.md` and commit concluded session audits.
 
 Steps:
-1. Read `session_log.md` to find the last session number and determine the next one.
-2. List `session_audits/` to find the audit file for this session (match by session ID or most recent file).
+1. Read `docs/session_log.md` to find the last session number and determine the next one.
+2. List `session_audits/` (repo root) to find the audit file for this session (match by session ID or most recent file).
 3. Review the conversation so far and identify all meaningful contributions from both Human and Claude.
-4. Append a new session section to `session_log.md` with:
+4. Append a new session section to `docs/session_log.md` with:
    - Session heading: `## Session N — YYYY-MM-DD`
-   - Audit file link: `**Audit file**: [path](path)`
+   - Audit file link: `**Audit file**: [path](path)` — note that `docs/session_log.md` is one level below the repo root, so audit links must be `../session_audits/...`
    - Contribution table with numbered rows continuing from the last session's numbering
-5. Commit the updated `session_log.md`.
+5. Commit the updated `docs/session_log.md`.
 6. Commit concluded session audit files (see below).
 
 ## Cleaning up stale `.start` markers
