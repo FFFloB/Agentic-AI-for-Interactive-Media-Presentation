@@ -14,7 +14,7 @@
   // because walkthrough.load reads segments.placed which segments.load writes,
   // which would put the effect in a self-triggering loop.
   segments.load(segmentConfigs);
-  walkthrough.load(presentationConfig.steps);
+  walkthrough.load(presentationConfig);
 </script>
 
 <BackgroundCanvas />

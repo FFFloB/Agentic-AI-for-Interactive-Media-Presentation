@@ -2,13 +2,26 @@
   import { walkthrough } from './walkthrough.svelte';
 </script>
 
-{#if walkthrough.totalSteps > 0}
+{#if walkthrough.scripts.length > 0}
   <div class="controls">
     <button
+      class="control-btn seg-btn"
+      onclick={() => walkthrough.switchPrev()}
+      disabled={!walkthrough.canSwitchPrev}
+      aria-label="Previous segment"
+      title="Previous segment (←)"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M13 12L8 8l5-4M7 12L3 8l4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button
       class="control-btn"
-      onclick={() => walkthrough.prev()}
-      disabled={!walkthrough.canGoPrev}
+      onclick={() => walkthrough.stepPrev()}
+      disabled={!walkthrough.canStepPrev}
       aria-label="Previous step"
+      title="Previous step (↑)"
     >
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -17,14 +30,31 @@
 
     <button
       class="control-btn next-btn"
-      onclick={() => walkthrough.next()}
-      disabled={!walkthrough.canGoNext}
+      onclick={() => walkthrough.stepNext()}
+      disabled={!walkthrough.canStepNext}
       aria-label="Next step"
+      title="Next step (↓ / space)"
     >
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
+
+    <button
+      class="control-btn seg-btn"
+      onclick={() => walkthrough.switchNext()}
+      disabled={!walkthrough.canSwitchNext}
+      aria-label="Next segment"
+      title="Next segment (→)"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M3 4l4 4-4 4M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <span class="seg-indicator">
+      seg {walkthrough.activeIndex + 1} / {walkthrough.scripts.length}
+    </span>
 
     <span class="step-indicator">
       {Math.max(0, walkthrough.currentIndex + 1)} / {walkthrough.totalSteps}
@@ -82,11 +112,25 @@
     background: rgba(255, 255, 255, 0.08);
   }
 
+  .seg-btn {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .seg-indicator,
   .step-indicator {
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.75rem;
     font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+  }
+
+  .seg-indicator {
     margin-left: 0.5rem;
+  }
+
+  .step-indicator {
+    padding-left: 0.5rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .step-label {

@@ -1,4 +1,9 @@
-import type { CameraTarget, PresentationStep } from '$lib/types';
+import type {
+  CameraTarget,
+  PresentationConfig,
+  PresentationStep,
+  SegmentScript,
+} from '$lib/types';
 import { camera } from '$lib/camera/camera.svelte';
 import { segments } from '$lib/segments/segments.svelte';
 import {
@@ -8,88 +13,152 @@ import {
   scrollYForTarget,
 } from '$lib/segments/camera-targets';
 import { getStage, resetAllStages } from '$lib/stage/stage-registry';
+import { DEFAULTS } from '$lib/constants';
 
+// Navigation model:
+// - up/down (stepNext / stepPrev) drives progression within the active segment.
+//   Each segment has its own local script; `positions[i]` tracks the last
+//   applied step index per segment (-1 = untouched, sitting at segment landing).
+// - left/right (switchNext / switchPrev) moves between segments. The camera
+//   snapshots the current position on leave, and restores it on return, so
+//   round-tripping between segments preserves state.
 class WalkthroughEngine {
-  steps = $state<PresentationStep[]>([]);
-  currentIndex = $state(-1);
-  isRunning = $state(false);
-  activeSegmentId = $state<string | null>(null);
+  scripts = $state<SegmentScript[]>([]);
+  activeIndex = $state(0);
+  positions = $state<number[]>([]);
 
-  private history: CameraTarget[] = [];
+  private snapshots: (CameraTarget | null)[] = [];
+  private history: CameraTarget[][] = [];
+  private running = $state(false);
 
-  get totalSteps(): number {
-    return this.steps.length;
+  get isRunning(): boolean {
+    return this.running;
   }
 
-  get canGoNext(): boolean {
-    return !this.isRunning && this.currentIndex < this.steps.length - 1;
+  get activeScript(): SegmentScript | undefined {
+    return this.scripts[this.activeIndex];
   }
 
-  get canGoPrev(): boolean {
-    return !this.isRunning && this.currentIndex >= 0;
+  get activeSegmentId(): string | null {
+    return this.activeScript?.segmentId ?? null;
   }
 
   get currentStep(): PresentationStep | undefined {
-    return this.steps[this.currentIndex];
+    const script = this.activeScript;
+    const pos = this.positions[this.activeIndex];
+    if (!script || pos === undefined || pos < 0) return undefined;
+    return script.steps[pos];
   }
 
-  load(steps: PresentationStep[]) {
-    this.steps = steps;
-    this.currentIndex = -1;
-    this.history = [];
-    this.activeSegmentId = null;
+  get currentIndex(): number {
+    return this.positions[this.activeIndex] ?? -1;
+  }
+
+  get totalSteps(): number {
+    return this.activeScript?.steps.length ?? 0;
+  }
+
+  get canStepNext(): boolean {
+    return !this.running && this.currentIndex < this.totalSteps - 1;
+  }
+
+  get canStepPrev(): boolean {
+    return !this.running && this.currentIndex >= 0;
+  }
+
+  get canSwitchNext(): boolean {
+    return !this.running && this.activeIndex < this.scripts.length - 1;
+  }
+
+  get canSwitchPrev(): boolean {
+    return !this.running && this.activeIndex > 0;
+  }
+
+  load(config: PresentationConfig) {
+    this.scripts = config.scripts;
+    this.positions = config.scripts.map(() => -1);
+    this.snapshots = config.scripts.map(() => null);
+    this.history = config.scripts.map(() => []);
+    this.activeIndex = 0;
     resetAllStages();
 
-    // Land the camera on the first reachable segment so the initial view is not blank.
-    const firstSegmentStep = steps.find(
-      (s): s is Extract<PresentationStep, { type: 'camera' }> =>
-        s.type === 'camera',
-    );
-    if (firstSegmentStep) {
-      const seg = segments.get(firstSegmentStep.segmentId);
+    // Land camera on the first segment.
+    const script = this.scripts[0];
+    if (script) {
+      const seg = segments.get(script.segmentId);
       if (seg) {
-        const target = firstSegmentStep.targetId
-          ? cameraTargetForZoom(
-              seg,
-              seg.zoomTargets!.find((t) => t.id === firstSegmentStep.targetId)!,
-            )
-          : cameraTargetForSegment(seg);
-        camera.jumpTo(target);
-        this.activeSegmentId = firstSegmentStep.segmentId;
+        camera.jumpTo(cameraTargetForSegment(seg));
       }
     }
   }
 
-  async next() {
-    if (!this.canGoNext) return;
-    this.isRunning = true;
-    const nextIndex = this.currentIndex + 1;
-    const step = this.steps[nextIndex];
-    this.history[nextIndex] = {
+  async stepNext() {
+    if (!this.canStepNext) return;
+    this.running = true;
+    const idx = this.activeIndex;
+    const script = this.scripts[idx];
+    const newPos = this.positions[idx] + 1;
+    const step = script.steps[newPos];
+    this.history[idx][newPos] = {
       x: camera.x,
       y: camera.y,
       zoom: camera.zoom,
     };
-    this.currentIndex = nextIndex;
-    await this.apply(step);
-    this.isRunning = false;
+    this.positions[idx] = newPos;
+    await this.applyStep(step);
+    this.running = false;
   }
 
-  async prev() {
-    if (!this.canGoPrev) return;
-    this.isRunning = true;
-    const step = this.steps[this.currentIndex];
-    const preState = this.history[this.currentIndex];
-    await this.undo(step, preState);
-    this.currentIndex--;
-    this.isRunning = false;
+  async stepPrev() {
+    if (!this.canStepPrev) return;
+    this.running = true;
+    const idx = this.activeIndex;
+    const script = this.scripts[idx];
+    const pos = this.positions[idx];
+    const step = script.steps[pos];
+    const preState = this.history[idx][pos];
+    await this.undoStep(step, preState);
+    this.positions[idx] = pos - 1;
+    this.running = false;
   }
 
-  private async apply(step: PresentationStep) {
+  async switchNext() {
+    if (!this.canSwitchNext) return;
+    await this.switchTo(this.activeIndex + 1);
+  }
+
+  async switchPrev() {
+    if (!this.canSwitchPrev) return;
+    await this.switchTo(this.activeIndex - 1);
+  }
+
+  private async switchTo(newIndex: number) {
+    this.running = true;
+    this.snapshots[this.activeIndex] = {
+      x: camera.x,
+      y: camera.y,
+      zoom: camera.zoom,
+    };
+    this.activeIndex = newIndex;
+
+    const script = this.scripts[newIndex];
+    const seg = script ? segments.get(script.segmentId) : undefined;
+    if (!seg) {
+      this.running = false;
+      return;
+    }
+    const snapshot = this.snapshots[newIndex];
+    const target = snapshot ?? cameraTargetForSegment(seg);
+    await camera.animateTo(target, {
+      duration: DEFAULTS.animation.duration,
+    });
+    this.running = false;
+  }
+
+  private async applyStep(step: PresentationStep) {
     if (step.type === 'camera') {
       const seg = segments.get(step.segmentId);
       if (!seg) return;
-      this.activeSegmentId = seg.id;
       const target = step.targetId
         ? this.resolveZoomTarget(seg.id, step.targetId)
         : cameraTargetForSegment(seg);
@@ -101,7 +170,6 @@ class WalkthroughEngine {
     } else if (step.type === 'advance') {
       const ctrl = getStage(step.segmentId);
       ctrl?.advance();
-      this.activeSegmentId = step.segmentId;
     } else if (step.type === 'context-zoom') {
       const from = segments.get(step.fromSegmentId);
       const to = segments.get(step.toSegmentId);
@@ -114,15 +182,12 @@ class WalkthroughEngine {
     } else if (step.type === 'spotlight') {
       const seg = segments.get(step.segmentId);
       if (!seg) return;
-      this.activeSegmentId = seg.id;
-
       const ctrl = getStage(step.segmentId);
       const runtime = ctrl?.getZoomTargetRect?.(step.targetId);
       const target = runtime
         ? { id: step.targetId, ...runtime }
         : seg.zoomTargets?.find((z) => z.id === step.targetId);
       if (!target) return;
-
       const y = scrollYForTarget(seg, target);
       await camera.scrollTo(y, {
         duration: step.duration,
@@ -131,7 +196,7 @@ class WalkthroughEngine {
     }
   }
 
-  private async undo(step: PresentationStep, preState: CameraTarget | undefined) {
+  private async undoStep(step: PresentationStep, preState: CameraTarget | undefined) {
     if (!preState) return;
     if (
       step.type === 'camera' ||
@@ -148,17 +213,17 @@ class WalkthroughEngine {
     }
   }
 
-  private resolveZoomTarget(segmentId: string, targetId: string): CameraTarget | undefined {
+  private resolveZoomTarget(
+    segmentId: string,
+    targetId: string,
+  ): CameraTarget | undefined {
     const seg = segments.get(segmentId);
     if (!seg) return undefined;
-
-    // Prefer runtime-measured rect from the segment's stage controller.
     const ctrl = getStage(segmentId);
     const runtime = ctrl?.getZoomTargetRect?.(targetId);
     if (runtime) {
       return cameraTargetForZoom(seg, { id: targetId, ...runtime });
     }
-
     const t = seg.zoomTargets?.find((z) => z.id === targetId);
     if (!t) return undefined;
     return cameraTargetForZoom(seg, t);

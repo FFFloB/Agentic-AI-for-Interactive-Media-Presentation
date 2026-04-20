@@ -103,10 +103,18 @@ export type PresentationStep =
   | ContextZoomStep
   | SpotlightStep;
 
+// A segment's local script: the steps that drive its internal progression
+// (advances, spotlights, in-segment camera moves). Cross-segment navigation
+// is a separate axis handled by the walkthrough engine, not by steps.
+export interface SegmentScript {
+  segmentId: string;
+  steps: PresentationStep[];
+}
+
 export interface PresentationConfig {
   name: string;
   description?: string;
-  steps: PresentationStep[];
+  scripts: SegmentScript[];
 }
 
 // === Background ===

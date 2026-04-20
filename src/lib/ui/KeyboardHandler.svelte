@@ -3,18 +3,29 @@
 
   function handleKeydown(e: KeyboardEvent) {
     switch (e.key) {
-      case 'ArrowRight':
+      // Within-segment progression
       case 'ArrowDown':
       case ' ':
       case 'Enter':
+      case 'PageDown':
         e.preventDefault();
-        walkthrough.next();
+        walkthrough.stepNext();
         break;
-      case 'ArrowLeft':
       case 'ArrowUp':
       case 'Backspace':
+      case 'PageUp':
         e.preventDefault();
-        walkthrough.prev();
+        walkthrough.stepPrev();
+        break;
+
+      // Cross-segment navigation
+      case 'ArrowRight':
+        e.preventDefault();
+        walkthrough.switchNext();
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        walkthrough.switchPrev();
         break;
     }
   }
