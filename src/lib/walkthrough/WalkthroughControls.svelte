@@ -1,13 +1,5 @@
 <script lang="ts">
   import { walkthrough } from './walkthrough.svelte';
-
-  function togglePlay() {
-    if (walkthrough.isPlaying) {
-      walkthrough.pause();
-    } else {
-      walkthrough.play();
-    }
-  }
 </script>
 
 {#if walkthrough.totalSteps > 0}
@@ -23,21 +15,8 @@
       </svg>
     </button>
 
-    <button class="control-btn play-btn" onclick={togglePlay} aria-label={walkthrough.isPlaying ? 'Pause' : 'Play'}>
-      {#if walkthrough.isPlaying}
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-          <rect x="4" y="3" width="3" height="10" rx="0.5"/>
-          <rect x="9" y="3" width="3" height="10" rx="0.5"/>
-        </svg>
-      {:else}
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M5 3l8 5-8 5V3z"/>
-        </svg>
-      {/if}
-    </button>
-
     <button
-      class="control-btn"
+      class="control-btn next-btn"
       onclick={() => walkthrough.next()}
       disabled={!walkthrough.canGoNext}
       aria-label="Next step"
@@ -48,7 +27,7 @@
     </button>
 
     <span class="step-indicator">
-      {walkthrough.currentIndex + 1} / {walkthrough.totalSteps}
+      {Math.max(0, walkthrough.currentIndex + 1)} / {walkthrough.totalSteps}
     </span>
 
     {#if walkthrough.currentStep?.label}
@@ -60,18 +39,19 @@
 <style>
   .controls {
     position: fixed;
-    bottom: 2rem;
+    bottom: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 10, 20, 0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 9999px;
     z-index: 100;
+    font-family: var(--font-sans);
   }
 
   .control-btn {
@@ -83,7 +63,7 @@
     border: none;
     border-radius: 50%;
     background: transparent;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.75);
     cursor: pointer;
     transition: all 0.15s ease;
   }
@@ -94,14 +74,12 @@
   }
 
   .control-btn:disabled {
-    opacity: 0.3;
+    opacity: 0.25;
     cursor: default;
   }
 
-  .play-btn {
-    width: 2.5rem;
-    height: 2.5rem;
-    background: rgba(255, 255, 255, 0.1);
+  .next-btn {
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .step-indicator {
@@ -115,5 +93,9 @@
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.75rem;
     margin-left: 0.25rem;
+    max-width: 18rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>

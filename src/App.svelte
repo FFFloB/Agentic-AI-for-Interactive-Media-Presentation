@@ -2,25 +2,26 @@
   import './app.css';
   import BackgroundCanvas from '$lib/background/BackgroundCanvas.svelte';
   import CameraViewport from '$lib/camera/CameraViewport.svelte';
-  import CanvasLayer from '$lib/canvas/CanvasLayer.svelte';
-  import FocusOverlay from '$lib/focus/FocusOverlay.svelte';
+  import SegmentLayer from '$lib/segments/SegmentLayer.svelte';
   import WalkthroughControls from '$lib/walkthrough/WalkthroughControls.svelte';
   import KeyboardHandler from '$lib/ui/KeyboardHandler.svelte';
+  import { segments } from '$lib/segments/segments.svelte';
   import { walkthrough } from '$lib/walkthrough/walkthrough.svelte';
-  import { elements } from '$content/slides.config';
-  import { walkthroughConfig } from '$content/walkthrough.config';
+  import { segmentConfigs } from '$content/segments.config';
+  import { presentationConfig } from '$content/walkthrough.config';
 
-  $effect(() => {
-    walkthrough.load(walkthroughConfig.steps);
-  });
+  // One-time initialization: static configs; must NOT run inside $effect,
+  // because walkthrough.load reads segments.placed which segments.load writes,
+  // which would put the effect in a self-triggering loop.
+  segments.load(segmentConfigs);
+  walkthrough.load(presentationConfig.steps);
 </script>
 
 <BackgroundCanvas />
 
 <CameraViewport>
-  <CanvasLayer {elements} />
+  <SegmentLayer placed={segments.placed} />
 </CameraViewport>
 
-<FocusOverlay />
 <WalkthroughControls />
 <KeyboardHandler />

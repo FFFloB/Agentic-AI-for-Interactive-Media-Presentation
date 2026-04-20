@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 *,
 *::before,
 *::after {
@@ -7,16 +9,57 @@
 }
 
 :root {
-  --color-bg: #0a0a0f;
-  --color-surface: #14141f;
-  --color-text: #e8e8f0;
-  --color-text-muted: rgba(232, 232, 240, 0.6);
-  --color-accent: #6366f1;
-  --color-accent-secondary: #ec4899;
-  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  /* Base surface */
+  --color-bg: #07070d;
+  --color-surface: #11111c;
+  --color-surface-raised: #181828;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  /* Text */
+  --color-text: #f2f2f8;
+  --color-text-muted: rgba(242, 242, 248, 0.62);
+  --color-text-subtle: rgba(242, 242, 248, 0.4);
+
+  /* Attribution colors (Decision: human = green, AI = vibrant gradient) */
+  --color-human: #34d399;
+  --color-human-soft: rgba(52, 211, 153, 0.16);
+  --color-ai-start: #a855f7;
+  --color-ai-mid: #ec4899;
+  --color-ai-end: #f59e0b;
+  --color-ai-soft: rgba(168, 85, 247, 0.12);
+
+  /* Headline gradient (same family as AI accent but tuned for text) */
+  --gradient-headline: linear-gradient(
+    92deg,
+    #a78bfa 0%,
+    #f472b6 45%,
+    #fbbf24 100%
+  );
+  --gradient-accent: linear-gradient(
+    135deg,
+    var(--color-ai-start) 0%,
+    var(--color-ai-mid) 55%,
+    var(--color-ai-end) 100%
+  );
+
+  /* Tooling highlights */
+  --color-tool-bg: rgba(168, 85, 247, 0.08);
+  --color-tool-border: rgba(168, 85, 247, 0.35);
+  --color-code-bg: #0b0b14;
+  --color-code-border: rgba(255, 255, 255, 0.06);
+  --color-error: #f87171;
+  --color-success: #4ade80;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
 }
 
 html,
@@ -27,6 +70,8 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+  font-weight: 400;
+  font-feature-settings: 'ss01', 'cv11';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -37,5 +82,13 @@ body {
 }
 
 ::selection {
-  background: rgba(99, 102, 241, 0.3);
+  background: rgba(168, 85, 247, 0.35);
+}
+
+.headline-gradient {
+  background: var(--gradient-headline);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.02em;
 }

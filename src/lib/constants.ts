@@ -5,14 +5,23 @@ export const DEFAULTS = {
     zoom: 1,
   },
   animation: {
-    duration: 1.5,
+    duration: 1.2,
     ease: 'power2.inOut',
   },
-  walkthrough: {
-    pauseDuration: 3000,
+  segment: {
+    baseWidth: 1920,
+    baseHeight: 1080,
+    gap: 480,
+  },
+  scroll: {
+    // auto-scroll during staging
+    stageScrollDuration: 0.6,
+    stageScrollEase: 'power2.out',
+    // free scroll (wheel)
+    wheelSensitivity: 1,
   },
   zoom: {
-    min: 0.2,
-    max: 3,
+    min: 0.15,
+    max: 4,
   },
 } as const;

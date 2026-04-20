@@ -38,6 +38,19 @@ class CameraState {
     return tween;
   }
 
+  scrollTo(y: number, options?: AnimationOptions): gsap.core.Tween {
+    this.activeTween?.kill();
+
+    const tween = gsap.to(this, {
+      y,
+      duration: options?.duration ?? DEFAULTS.animation.duration,
+      ease: options?.ease ?? DEFAULTS.animation.ease,
+    });
+
+    this.activeTween = tween;
+    return tween;
+  }
+
   jumpTo(target: CameraTarget) {
     this.activeTween?.kill();
     this.x = target.x;

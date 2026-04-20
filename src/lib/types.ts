@@ -13,39 +13,100 @@ export interface AnimationOptions {
   ease?: string;
 }
 
-// === Canvas Elements ===
+// === Segments ===
 
-export interface CanvasElementConfig {
+export interface ZoomTarget {
   id: string;
-  x: number;
-  y: number;
-  scale: number;
+  xOffset: number;
+  yOffset: number;
+  width: number;
+  height: number;
+  label?: string;
+}
+
+export interface SegmentConfig {
+  id: string;
   width: number;
   height: number;
   component: string;
-  focusComponent?: string;
   label?: string;
+  zoomTargets?: ZoomTarget[];
   meta?: Record<string, unknown>;
 }
 
-// === Walkthrough ===
+export interface PlacedSegment extends SegmentConfig {
+  xOffset: number;
+}
 
-export interface WalkthroughStep {
+// === Stage Controller ===
+//
+// Segments that pre-stage content expose a stage controller so the
+// walkthrough engine can drive internal state advances from the flat script.
+
+export interface ZoomTargetRect {
+  xOffset: number;
+  yOffset: number;
+  width: number;
+  height: number;
+}
+
+export interface StageController {
+  stageIndex: number;
+  maxStage: number;
+  advance(): boolean;
+  retreat(): boolean;
+  reset(): void;
+  getZoomTargetRect?(id: string): ZoomTargetRect | undefined;
+}
+
+// === Presentation Script (flat) ===
+
+interface StepBase {
   id: string;
-  targetElementId?: string;
-  x: number;
-  y: number;
-  zoom: number;
-  duration?: number;
-  ease?: string;
-  pauseDuration?: number;
   label?: string;
 }
 
-export interface WalkthroughConfig {
+export interface CameraStep extends StepBase {
+  type: 'camera';
+  segmentId: string;
+  targetId?: string;
+  duration?: number;
+  ease?: string;
+}
+
+export interface AdvanceStep extends StepBase {
+  type: 'advance';
+  segmentId: string;
+  duration?: number;
+  ease?: string;
+}
+
+export interface ContextZoomStep extends StepBase {
+  type: 'context-zoom';
+  fromSegmentId: string;
+  toSegmentId: string;
+  duration?: number;
+  ease?: string;
+}
+
+export interface SpotlightStep extends StepBase {
+  type: 'spotlight';
+  segmentId: string;
+  targetId: string;
+  duration?: number;
+  ease?: string;
+}
+
+export type PresentationStep =
+  | CameraStep
+  | AdvanceStep
+  | ContextZoomStep
+  | SpotlightStep;
+
+export interface PresentationConfig {
   name: string;
   description?: string;
-  steps: WalkthroughStep[];
+  steps: PresentationStep[];
 }
 
 // === Background ===
