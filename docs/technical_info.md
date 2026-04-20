@@ -69,3 +69,16 @@ src/
 - **GSAP integration**: GSAP tweens `$state` properties on plain class instances. Svelte reactivity handles re-rendering.
 - **Component loading**: Dynamic `import()` via a registry map. Vite auto-splits each content component into its own chunk.
 - **Content authoring**: Define element positions in `slides.config.ts`, walkthrough order in `walkthrough.config.ts`, register components in `elements.ts`.
+
+## Pending Revisions
+
+Design-pass on 2026-04-20 (see `key_decisions.md` #5-#10) introduced criteria not yet reflected in code. Planned changes:
+
+- **Canvas layout**: move from free 2D positions in `slides.config.ts` to a left-to-right ribbon model where segments are laid out sequentially and each segment has its own vertical extent. Segment-local coordinates (rather than a single world space) may simplify scroll + zoom authoring.
+- **Zoom targets**: extend the segment/slide config to declare named zoom targets per segment. The camera system accepts these as discrete destinations (no free zoom).
+- **Focus system**: replace `FocusOverlay` chrome with a seamless camera-zoom-to-element. Interactive components stop being rendered inside an overlay; instead, the same canvas-mounted component becomes interactive when its zoom target fills the viewport. Exit is driven by the presentation script, not a close button.
+- **Walkthrough engine**: extend the flat step list in `walkthrough.config.ts` so each step is either a camera move *or* a segment-internal advance. One advance control (click/space) drives both. This likely means segments expose an advance hook that the engine can invoke.
+- **Segment staging**: segments that pre-stage (like the agentic chat brief in `content_briefs.md`) need a local "stage index" state and auto-scroll-to-newest behavior during staging, with free scroll unlocking after the last stage.
+- **Inter-segment context transition**: an optional transition type that zooms out to reveal adjacent segments before landing on the next one.
+- **Typography & color**: pin headline gradient palette and base dark; apply Inter Semi Bold (or equivalent) across the app.
+- **Performance**: explicitly deferred. Expect many DOM elements and tall scroll regions to be mounted simultaneously.

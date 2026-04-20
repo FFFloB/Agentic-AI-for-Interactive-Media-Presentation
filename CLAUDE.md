@@ -12,5 +12,5 @@
 ## Git Use
 
 - **Commit tagging**: Claude's commits include a `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>` trailer. Human commits won't have this trailer. Detailed per-contribution attribution lives in `docs/session_log.md`.
-- **Commit frequency**: Commit frequently in meaningful batches after changes. Commit updates to the session_audits separately, but only commit sessions that have been concluded - avoid tracking sessions as they are ongoing, this history is not meaningful.
+- **Commit frequency**: Commit frequently, in small, meaningful batches as work is completed - ideally after each focused change (a new segment, a bug fix, a design pass). Do not let many unrelated changes pile up in a single commit; smaller, well-scoped commits make file-level progress easier to track and revert. Commit updates to the session_audits separately, but only commit sessions that have been concluded - avoid tracking sessions as they are ongoing, this history is not meaningful.
 
