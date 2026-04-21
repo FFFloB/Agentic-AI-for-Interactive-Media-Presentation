@@ -132,6 +132,17 @@ class WalkthroughEngine {
     await this.switchTo(this.activeIndex - 1);
   }
 
+  // Jump directly to a segment by index. Ignores invalid / out-of-range
+  // values and no-ops if already there. Used by the digit-input jump
+  // shortcut in the keyboard handler.
+  async jumpTo(index: number) {
+    if (this.running) return;
+    if (!Number.isFinite(index)) return;
+    const clamped = Math.max(0, Math.min(this.scripts.length - 1, index));
+    if (clamped === this.activeIndex) return;
+    await this.switchTo(clamped);
+  }
+
   private async switchTo(newIndex: number) {
     this.running = true;
     this.snapshots[this.activeIndex] = {

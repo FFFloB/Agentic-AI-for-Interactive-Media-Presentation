@@ -504,6 +504,95 @@ print('validated')</code></pre>
       </div>
     {/if}
 
+    <!-- Part 5: local-file read + edit. Demonstrates working with files on
+         disk, not a new takeaway but an extension of the same tool story. -->
+
+    {#if chatStage.reveal(20)}
+      <div class="message user" data-staged="true">
+        <div class="bubble">
+          I have a draft at <code>docs/economy-of-bananas.md</code> - please
+          add a section on these latest numbers.
+        </div>
+      </div>
+    {/if}
+
+    {#if chatStage.reveal(21)}
+      <div class="thinking" data-staged="true">
+        <div class="thinking-header">
+          <span class="pulse"></span>
+          Thinking
+        </div>
+        <div class="thinking-body">
+          <p class="thought">
+            Read the draft first to see its structure, then append a 2026
+            section with the figures I just pulled.
+          </p>
+        </div>
+      </div>
+    {/if}
+
+    {#if chatStage.reveal(22)}
+      <div class="tool-call" data-staged="true">
+        <div class="tool-header">
+          <span class="tool-icon">fs</span>
+          <span class="tool-name">read_file</span>
+          <span class="tool-status">completed</span>
+        </div>
+        <div class="tool-note">
+          <code>docs/economy-of-bananas.md</code>
+        </div>
+        <pre class="code"><code># The Economy of Bananas
+
+## Global exports - 2024
+In 2024, global banana exports reached approximately
+18 million tonnes. Ecuador remained the top exporter
+with a 27% share, followed by the Philippines and
+Costa Rica.
+
+## Production centres
+Latin America continues to dominate production…</code></pre>
+      </div>
+    {/if}
+
+    {#if chatStage.reveal(23)}
+      <div class="tool-call" data-staged="true">
+        <div class="tool-header">
+          <span class="tool-icon">fs</span>
+          <span class="tool-name">edit_file</span>
+          <span class="tool-status">completed</span>
+        </div>
+        <div class="tool-note">
+          Appending a 2026 section after the 2024 overview.
+        </div>
+        <pre class="code diff"><code><span class="diff-context">## Global exports - 2024</span>
+<span class="diff-context">In 2024, global banana exports reached approximately</span>
+<span class="diff-context">18 million tonnes. Ecuador remained the top exporter</span>
+<span class="diff-context">with a 27% share, followed by the Philippines and</span>
+<span class="diff-context">Costa Rica.</span>
+<span class="diff-add">+</span>
+<span class="diff-add">+## Global exports - 2026</span>
+<span class="diff-add">+Exports in 2026 reached an estimated 20.4 million</span>
+<span class="diff-add">+tonnes, up from 19.8 Mt in 2025. Ecuador kept the</span>
+<span class="diff-add">+lead with a 28% share, followed by the Philippines</span>
+<span class="diff-add">+and Costa Rica. (Source: fao.org)</span></code></pre>
+        <div class="tool-output">
+          <span class="output-label">status</span>
+          <pre><code>1 file changed, 6 insertions(+)</code></pre>
+        </div>
+      </div>
+    {/if}
+
+    {#if chatStage.reveal(24)}
+      <div class="message ai" data-staged="true">
+        <div class="avatar">AI</div>
+        <div class="body">
+          Added a <strong>2026 exports</strong> section to your draft,
+          citing the fao.org figure of 20.4 Mt and keeping the year-on-year
+          comparison with 2025.
+        </div>
+      </div>
+    {/if}
+
     <!-- Spacer so the last message doesn't stick to segment bottom -->
     <div class="tail-spacer"></div>
   </div>
@@ -859,6 +948,26 @@ print('validated')</code></pre>
 
   .code code {
     font-family: inherit;
+  }
+
+  /* Diff-coloured lines inside an edit_file tool call. Context rows stay
+     muted; added rows get a green tint + a faint green left gutter. */
+  .code.diff {
+    line-height: 1.45;
+  }
+
+  .diff-context {
+    display: block;
+    color: var(--color-text-subtle);
+  }
+
+  .diff-add {
+    display: block;
+    background: rgba(74, 222, 128, 0.08);
+    color: var(--color-success);
+    box-shadow: inset 3px 0 0 0 rgba(74, 222, 128, 0.55);
+    padding-left: 6px;
+    margin-left: -6px;
   }
 
   .tool-output {

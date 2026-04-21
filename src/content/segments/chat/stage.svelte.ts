@@ -2,7 +2,7 @@ import type { StageController, ZoomTargetRect } from '$lib/types';
 
 class ChatStage implements StageController {
   stageIndex = $state(0);
-  readonly maxStage = 19;
+  readonly maxStage = 24;
 
   private rects = $state<Record<string, ZoomTargetRect>>({});
 

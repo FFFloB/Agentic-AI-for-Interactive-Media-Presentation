@@ -8,6 +8,16 @@
 ## Writing Style
 
 - **No long dashes**: Never use em-dashes (`—`) or en-dashes (`–`) in any presented content (ads, emails, documentation copy, slide text, etc.). Use hyphens (`-`), commas, or rephrase.
+- **Provider-agnostic content**: The talk itself must not name or favour any specific AI provider or product. No "Claude", "ChatGPT", "Gemini", "Anthropic", "OpenAI", "CLAUDE.md", etc. in any presented content (slide copy, segments, sample text, screenshots). Use generic terms like "the model", "the agent", "memory file", "assistant". This rule applies to everything the audience will see; project-internal files (this CLAUDE.md, commit trailers, tooling configs) are exempt.
+
+## Audience Modes
+
+The presentation has two audience modes (`'design'` | `'technical'`), switched via `?mode=technical` in the URL (design is default). Content is split into:
+
+- **Common denominator, hand-authored, never mode-switched**: headlines (h1), subheadlines (segment subhead), section labels, callout labels + bodies, takeaway copy, tier/paradigm/phase blurbs. These are the load-bearing argument and stay identical across modes. Do not template them.
+- **Exemplars, mode-templated**: concrete scenario content that differs by audience - user prompts in bubbles, code/file samples in cards, file paths, example asks in a tiers card, and any line where the *example* of "what one of these looks like" would genuinely differ between a designer and a developer.
+
+When in doubt, ask. Drift on this rule dilutes the talk's spine.
 
 ## Git Use
 
