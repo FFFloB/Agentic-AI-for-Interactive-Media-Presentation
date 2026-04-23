@@ -4,7 +4,9 @@ One hour, mixed-technical audience. The assistant walks us from "what shall we b
 
 ## Global rules (apply to every phase)
 
-- **Checkpoint pauses.** After each phase completes, the assistant stops and waits for the facilitator to say "continue" (or similar) before starting the next. No auto-advancing.
+- **Scope: mobile apps only.** The concept must be a mobile app - phone-screen-sized, touch-first. Games, desktop apps, CLI tools, browser extensions, multi-window layouts, landscape-only experiences, and anything that is not a mobile app are out of scope and must be redirected during Phase 1. This is a hard boundary: it lets us reliably host the result in the presentation's phone simulator and keeps the design conversation tractable in 60 minutes.
+- **Flow naturally, don't force checkpoints.** Move from phase to phase when the work is done. Only stop when you actually need input: a decision, a choice the room must make, or a sign-off on something the room needs to see first. Do not end every phase with "waiting for continue."
+- **One mandatory pause: after Phase 8.** The roadmap and architecture docs must be reviewed by the facilitator (and ideally the room) before the build begins. Stop after Phase 8 and wait for an explicit go-ahead before starting Phase 9.
 - **Scope policy: optimistic backlog, prioritized top-down.** The MVP checklist should be ambitious on purpose. The build phase works it top to bottom; whatever is not done when time runs out becomes honest "future work." This is more useful pedagogically than a conservative list that always finishes: it makes prioritization visible, shows the roadmap as a living document, and gives a genuine story about what the agent did and did not reach.
 - **Wireframes are deliberately skipped.** The design pack plus direct implementation replaces a wireframing phase. Call this out at phase 5.
 - **"Pause" is the eject word.** If the facilitator says "pause" at any point, the assistant stops immediately.
@@ -15,7 +17,7 @@ One hour, mixed-technical audience. The assistant walks us from "what shall we b
 
 **Goal.** Leave with a one-line concept the room is aligned on.
 
-**Assistant does.** Opens with "what shall we build today?" Offers 2-3 lightweight example directions to unstick the room if ideas don't flow (e.g. a micro-tool, a small game, a one-screen utility). Asks one or two clarifying questions once ideas start landing, then proposes a candidate one-liner in the form "[thing] that [does X] for [audience] so that [outcome]." Does not start writing files yet.
+**Assistant does.** Opens with "what mobile app shall we build today?" Explains the scope: mobile apps only, no games, no desktop apps. Offers 2-3 lightweight mobile-app directions to unstick the room if ideas don't flow (e.g. a one-screen utility like a meeting-cost timer, a micro-social or list-sharing app, a habit or quick-capture tracker). Asks one or two clarifying questions once ideas start landing, then proposes a candidate one-liner in the form "[thing] that [does X] for [audience] so that [outcome]." If the room suggests something that is not a mobile app (a game, a website, a desktop tool), the assistant politely redirects and explains the constraint. Does not start writing files yet.
 
 **Facilitator does.** Moderates the room. Relays audience suggestions. Picks the direction to commit to.
 
@@ -55,10 +57,10 @@ One hour, mixed-technical audience. The assistant walks us from "what shall we b
 - Mood (playful / serious / calm / energetic)
 - Visual rhythm (minimal / rich / dense information)
 - Color temperature (warm / cool / neutral)
-- Reference anchors (sites, apps, or brands the room likes)
+- Reference anchors (sites, apps, or brands the room likes the *feel* of, for direction only)
 - Motion appetite (still / subtle / lively)
 
-Keep it conversational. Don't write anything yet.
+Keep it conversational. Don't write anything yet. **Never frame references as things to copy, imitate, or "steal from."** They are directional signals, not source material; use them to calibrate mood and leave originality intact.
 
 **Facilitator does.** Sample answers from the room. Picks a direction.
 
@@ -122,7 +124,7 @@ All HTML files must be standalone (no build step, no external CSS references). S
 
 **Facilitator does.** Reviews, asks the room if the priority order makes sense (order matters more than length).
 
-**Checkpoint.** Facilitator confirms top-to-bottom priority is right.
+**Checkpoint (MANDATORY PAUSE).** This is the one phase where the assistant must stop and wait. The facilitator reads the roadmap and architecture docs with the room and explicitly gives the go-ahead before Phase 9 begins. The build phase is expensive to restart, so sign-off here is non-negotiable.
 
 **Artifacts.** `docs/roadmap.md`, `docs/architecture.md`.
 
@@ -136,10 +138,11 @@ All HTML files must be standalone (no build step, no external CSS references). S
 
 **Assistant does.**
 1. Scaffolds `live_demo/sandbox/` as a Svelte 5 + Vite 6 + TypeScript project. Key rule: `vite.config.ts` must set `server.port = 5180` with `strictPort: true` so the demo never collides with the presentation running on 5173 and never silently falls back to another port.
-2. Works through the MVP checklist in `docs/roadmap.md` **top to bottom**. After each meaningful slice lands, ticks the box in the roadmap. Commits nothing (the sandbox is git-ignored by design).
-3. Works as far down the list as time allows. Does not skip items out of order to "finish the fun ones" - priority order is the contract.
-4. Keeps facilitator-audience updates terse. No live play-by-play. The status indicator and the roadmap ticks are doing that job.
-5. If blocked or ambiguous, stops and asks.
+2. **Build the app full-bleed, not phone-framed.** The app is rendered inside the presentation's phone simulator (an iframe at the correct mobile aspect ratio). Do **not** draw a self-contained phone frame around the app - that will double up with the simulator frame and look wrong. The root layout should fill 100% of the viewport; design all views as if the viewport already *is* the phone screen.
+3. Works through the MVP checklist in `docs/roadmap.md` **top to bottom**. After each meaningful slice lands, ticks the box in the roadmap. Commits nothing (the sandbox is git-ignored by design).
+4. Works as far down the list as time allows. Does not skip items out of order to "finish the fun ones" - priority order is the contract.
+5. Keeps facilitator-audience updates terse. No live play-by-play. The status indicator and the roadmap ticks are doing that job.
+6. If blocked or ambiguous, stops and asks.
 
 **Facilitator does.** Narrates the status indicator and roadmap ticks for the room. Switches to the sandbox files view occasionally to show docs being maintained. Can call time at any point, either to pause the build or to move on to launch.
 
