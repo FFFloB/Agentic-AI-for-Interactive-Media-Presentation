@@ -4,8 +4,6 @@
   // bridge isn't running (e.g. the compiled single-file HTML a student
   // opens), the component stays invisible - no broken UI in the wild.
 
-  import { STAGE_WIDTH, STAGE_HEIGHT } from '$lib/constants';
-
   type Status = 'ready' | 'working' | 'input-needed';
 
   const BRIDGE_URL = 'http://127.0.0.1:7321/events';
@@ -15,18 +13,6 @@
   let source: EventSource | null = null;
   let everConnected = false;
   let givenUp = false;
-
-  // Scale the indicator with the rest of the stage, matching the nav bar.
-  let winW = $state(window.innerWidth);
-  let winH = $state(window.innerHeight);
-  const fitScale = $derived(
-    Math.min(winW / STAGE_WIDTH, winH / STAGE_HEIGHT),
-  );
-
-  function onResize() {
-    winW = window.innerWidth;
-    winH = window.innerHeight;
-  }
 
   const LABELS: Record<Status, string> = {
     'ready': 'ready',
@@ -124,13 +110,12 @@
   });
 </script>
 
-<svelte:window onresize={onResize} onkeydown={handleKeydown} />
+<svelte:window onkeydown={handleKeydown} />
 
 {#if connected}
   <div
     class="status-indicator"
     data-status={status}
-    style:zoom={fitScale}
     aria-live="polite"
   >
     <span class="ai-mark" aria-hidden="true">
@@ -166,10 +151,9 @@
 {/if}
 
 <style>
+  /* The indicator is positioned by its HUD-corner parent. It contributes
+     only its inline shape: a pill-shaped flex row. */
   .status-indicator {
-    position: fixed;
-    top: 24px;
-    right: 24px;
     display: inline-flex;
     align-items: center;
     gap: 14px;
@@ -184,7 +168,6 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.62);
-    z-index: 1000;
     pointer-events: none;
     user-select: none;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;

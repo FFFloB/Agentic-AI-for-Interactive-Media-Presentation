@@ -80,6 +80,22 @@ A top-right indicator (`src/lib/ui/StatusIndicator.svelte`) shows what the AI as
 - Assistant hooks (configured in `.claude/settings.local.json`, git-ignored) POST to `/status/{ready|working|input-needed}` on `UserPromptSubmit`, `Stop`, and `Notification`.
 - The UI subscribes to `/events` via SSE. If the bridge isn't reachable on first connect, the indicator hides permanently for that page load - the compiled single-file HTML shows nothing on student machines.
 
+## Live Demo Workspace Explorer (Presenter-Only)
+
+A VS Code-style panel (`src/lib/workspace/`) that surfaces the live demo's sandbox in real time during the 1-hour build talk. Toggle with the circular button under the status indicator, or press Escape to close.
+
+**Wiring:**
+- `scripts/sandbox-plugin.mjs` is a dev-only Vite plugin (registered in `vite.config.ts`) that exposes four endpoints:
+  - `GET /_sandbox/tree` returns the directory tree of `live_demo/sandbox/` (hiding `.gitignore`, `node_modules`, `dist`, `.git`, `.vite`).
+  - `GET /_sandbox/file?path=...` returns raw file contents (text only, 2 MB cap).
+  - `GET /_sandbox/live-up` returns `{ up: boolean }` by probing `127.0.0.1:5180` and `::1:5180` in parallel; either hit counts.
+  - `GET /_sandbox/events` is an SSE stream that pushes on any file change in the sandbox (debounced on the client, 80 ms).
+- `workspace.svelte.ts` is a class singleton holding `isOpen`, `tree`, `target`, `liveUp`, `bridgeAvailable`. `init()` short-circuits if the bridge isn't there, so the compiled single-file build stays silent.
+- File previews are routed by extension: `.html` renders in a sandboxed iframe on a dark canvas with rounded corners; `.md` is parsed with `marked` and rendered in a paper-like sheet. Any other file is listed but not openable.
+- When `live-up` flips to true, a "live app" entry appears at the top of the tree. Opening it mounts `PhoneSimulator.svelte`, which embeds `http://localhost:5180/` in an iPhone-aspect bezel. Pointer events from the mouse reach the iframe natively, so no synthetic touch bridge is needed.
+
+**Demo-side contract:** the MVP built during Phase 9 of the live demo must render full-bleed (no self-drawn phone frame). The simulator supplies the frame. This is enforced in `live_demo/instructions/flow.md`.
+
 ## Pending Revisions
 
 Design-pass on 2026-04-20 (see `key_decisions.md` #5-#10) introduced criteria not yet reflected in code. Planned changes:

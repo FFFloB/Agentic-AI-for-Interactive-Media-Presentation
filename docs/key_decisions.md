@@ -52,3 +52,13 @@
 **Date**: 2026-04-20
 **Decision**: Do not optimize for the render cost of tall scrolled segments or many simultaneously-mounted elements. Correctness and feel take priority for now.
 **Rationale**: The design pass is exploratory; premature optimization would constrain it. Revisit once segment inventory is concrete.
+
+### 11. Workspace explorer via Vite middleware, not a separate bridge
+**Date**: 2026-04-23
+**Decision**: The live-demo workspace explorer (VS Code-style file tree + previews for `live_demo/sandbox/`) is served by a Vite dev plugin (`scripts/sandbox-plugin.mjs`) that attaches middleware to the presentation's own dev server. No separate Node process, no extra port. Four endpoints: `/_sandbox/tree`, `/_sandbox/file`, `/_sandbox/live-up`, `/_sandbox/events` (SSE for file-change push).
+**Rationale**: The only existing bridge pattern in this project is the status indicator, which uses its own SSE server on 7321. That extra process makes sense for the status indicator because it's driven by Claude Code hooks running outside the Vite process; there's no other way. For the workspace explorer, everything is filesystem-driven and already accessible from the Vite process (chokidar's watcher is ours to hook into). Adding another Node process would have been ceremony without benefit, plus another command for the presenter to start. Keeping the plugin `apply: 'serve'` means it's dead weight in the single-file production build.
+
+### 12. Phone simulator uses pointer events, not synthetic touch
+**Date**: 2026-04-23
+**Decision**: The live-app preview hosts the MVP in a phone-aspect iframe. We deliberately do NOT translate mouse events into synthetic touch events. Instead, the MVP app is required to use pointer events (which fire natively for mouse too), and the simulator simply frames the viewport at a mobile aspect.
+**Rationale**: The MVP needs touch support for its real mobile use. Pointer events are the modern standard that unifies mouse, pen, and touch on the input side, and they work on desktop without a translation layer. A synthetic touch bridge would have required injecting script into the iframe - which is blocked by same-origin policy between ports 5174 and 5180 - or an overlay that steals events from the iframe. Neither is clean. Pointer events give us the correct contract at zero integration cost. The flow doc now mandates full-bleed rendering in the MVP (no self-drawn phone frame) so the simulator's frame doesn't double up.

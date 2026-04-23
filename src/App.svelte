@@ -5,7 +5,7 @@
   import SegmentLayer from '$lib/segments/SegmentLayer.svelte';
   import WalkthroughControls from '$lib/walkthrough/WalkthroughControls.svelte';
   import KeyboardHandler from '$lib/ui/KeyboardHandler.svelte';
-  import StatusIndicator from '$lib/ui/StatusIndicator.svelte';
+  import OverlayLayer from '$lib/ui/OverlayLayer.svelte';
   import { segments } from '$lib/segments/segments.svelte';
   import { walkthrough } from '$lib/walkthrough/walkthrough.svelte';
   import { segmentConfigs } from '$content/segments.config';
@@ -26,4 +26,4 @@
 
 <WalkthroughControls />
 <KeyboardHandler />
-<StatusIndicator />
+<OverlayLayer />
