@@ -12,3 +12,8 @@ Thumbs.db
 
 # Session audit temp markers (not the audits themselves)
 session_audits/.*.start
+
+# Live demo sandbox - scaffolded fresh each talk, never committed.
+# Keep the folder itself (via .gitkeep) so the structure is always present.
+live_demo/sandbox/*
+!live_demo/sandbox/.gitkeep
