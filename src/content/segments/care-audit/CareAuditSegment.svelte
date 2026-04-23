@@ -570,12 +570,14 @@
     roundRect(ctx, x, y, w, h, 4);
     ctx.clip();
 
-    // Layout: the bottom ~55% of the block is the Gantt strip, split
-    // into four equal tracks. The top portion of the block is reserved
-    // for the session caption. If the block is too short overall, the
-    // strip shrinks but tracks stay proportional.
-    const stripTop = y + h * 0.45;
-    const stripH = h - (stripTop - y) - 4; // 4px bottom pad
+    // Caption band is at the top of the block (session title + meta).
+    // The Gantt strip fills everything below. We cap the caption at ~80px
+    // so tall blocks don't leave huge dead space between the title and
+    // the first human bar; very short blocks fall back to 35% so the
+    // caption still reads.
+    const captionH = Math.min(80, h * 0.35);
+    const stripTop = y + captionH;
+    const stripH = h - captionH - 4; // 4px bottom pad
     const trackH = stripH / TRACK_ORDER.length;
     const gap = Math.max(1, Math.min(2, trackH * 0.08));
     const barH = trackH - gap * 2;
@@ -878,14 +880,6 @@
           </div>
         {/if}
       </div>
-
-      <div class="legend">
-        <span class="lg-item"><span class="lg-dot human"></span>Human prompt</span>
-        <span class="lg-item"><span class="lg-dot ai"></span>AI reply</span>
-        <span class="lg-item"><span class="lg-dot think"></span>Thinking</span>
-        <span class="lg-item"><span class="lg-dot tool"></span>Tool use</span>
-        <span class="lg-hint">scroll to zoom · drag to pan · click a session</span>
-      </div>
     </div>
 
     {#if selectedSession}
@@ -904,7 +898,6 @@
           </div>
           <button class="dp-close" onclick={closeDetail} aria-label="Close detail">×</button>
         </div>
-        <div class="dp-title">{selectedSession.title}</div>
         <div class="dp-body" bind:this={detailEl} onscroll={updateDetailViewport}>
           {#each selectedSession.events as e, i (i)}
             <div
@@ -941,16 +934,26 @@
       </div>
     {/if}
   </div>
+
+  <div class="legend">
+    <span class="lg-item"><span class="lg-dot human"></span>Human prompt</span>
+    <span class="lg-item"><span class="lg-dot ai"></span>AI reply</span>
+    <span class="lg-item"><span class="lg-dot think"></span>Thinking</span>
+    <span class="lg-item"><span class="lg-dot tool"></span>Tool use</span>
+    <span class="lg-hint">scroll to zoom · drag to pan · click a session</span>
+  </div>
 </div>
 
 <style>
   .aud-root {
     width: 100%;
     height: 100%;
-    padding: 72px 80px 48px 80px;
+    /* Bottom padding clears the walkthrough nav bar (fixed at the
+       viewport bottom, ~76px tall including its 24px offset). */
+    padding: 64px 80px 120px 80px;
     display: grid;
-    grid-template-rows: auto 1fr;
-    gap: 32px;
+    grid-template-rows: auto 1fr auto;
+    gap: 24px;
     overflow: hidden;
   }
 
@@ -1013,7 +1016,6 @@
   .timeline-panel {
     display: flex;
     flex-direction: column;
-    gap: 14px;
     min-height: 0;
   }
 
@@ -1195,15 +1197,6 @@
   .dp-close:hover {
     background: rgba(255, 255, 255, 0.1);
     color: var(--color-text);
-  }
-
-  .dp-title {
-    padding: 14px 22px 12px;
-    font-size: 22px;
-    line-height: 1.35;
-    color: var(--color-text);
-    border-bottom: 1px solid var(--color-border);
-    background: rgba(0, 0, 0, 0.25);
   }
 
   .dp-body {
