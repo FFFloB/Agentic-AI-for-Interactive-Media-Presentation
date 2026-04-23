@@ -70,6 +70,16 @@ src/
 - **Component loading**: Dynamic `import()` via a registry map. Vite auto-splits each content component into its own chunk.
 - **Content authoring**: Define element positions in `slides.config.ts`, walkthrough order in `walkthrough.config.ts`, register components in `elements.ts`.
 
+## Live Status Indicator (Presenter-Only)
+
+A top-right indicator (`src/lib/ui/StatusIndicator.svelte`) shows what the AI assistant is currently doing during a live demo: `ready` (green), `working` (amber, slow pulse), `input needed` (pink, fast pulse).
+
+**Wiring:**
+- `scripts/status-bridge.mjs` is a zero-dep Node SSE server on `127.0.0.1:7321`.
+- Start it alongside the dev server: `npm run dev:bridge`.
+- Assistant hooks (configured in `.claude/settings.local.json`, git-ignored) POST to `/status/{ready|working|input-needed}` on `UserPromptSubmit`, `Stop`, and `Notification`.
+- The UI subscribes to `/events` via SSE. If the bridge isn't reachable on first connect, the indicator hides permanently for that page load - the compiled single-file HTML shows nothing on student machines.
+
 ## Pending Revisions
 
 Design-pass on 2026-04-20 (see `key_decisions.md` #5-#10) introduced criteria not yet reflected in code. Planned changes:

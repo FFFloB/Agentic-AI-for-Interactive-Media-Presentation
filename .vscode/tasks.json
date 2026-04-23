@@ -3,13 +3,32 @@
   "tasks": [
     {
       "label": "Dev Server",
+      "dependsOn": ["Vite", "Status Bridge"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "Vite",
       "type": "npm",
       "script": "dev",
       "problemMatcher": [],
       "isBackground": true,
       "presentation": {
         "reveal": "always",
-        "panel": "dedicated"
+        "panel": "dedicated",
+        "group": "dev"
+      }
+    },
+    {
+      "label": "Status Bridge",
+      "type": "npm",
+      "script": "dev:bridge",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "dev"
       }
     }
   ]
