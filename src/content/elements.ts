@@ -35,4 +35,10 @@ export const componentRegistry: Record<string, ComponentLoader> = {
     import('./segments/care-wrong/CareWrongSegment.svelte'),
   CareAgreementSegment: () =>
     import('./segments/care-agreement/CareAgreementSegment.svelte'),
+  CareVisualGapSegment: () =>
+    import('./segments/care-visual-gap/CareVisualGapSegment.svelte'),
+  KeyLearningsSegment: () =>
+    import('./segments/key-learnings/KeyLearningsSegment.svelte'),
+  ResourcesSegment: () =>
+    import('./segments/resources/ResourcesSegment.svelte'),
 };

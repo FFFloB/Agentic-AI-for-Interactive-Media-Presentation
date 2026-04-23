@@ -1,9 +1,11 @@
 import type { StageController } from '$lib/types';
 
-// "What went in" - training data provenance + vendor indemnity.
+// "Copyright" - using AI without stealing someone else's work.
+// Seven stages: frame -> how training works + "stealing" debate ->
+// basic rule -> three zones -> traps -> indemnity -> closer.
 class CareTrainingStage implements StageController {
   stageIndex = $state(0);
-  readonly maxStage = 8;
+  readonly maxStage = 7;
 
   advance(): boolean {
     if (this.stageIndex < this.maxStage) {

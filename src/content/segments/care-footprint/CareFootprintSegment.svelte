@@ -51,9 +51,10 @@
   }
 
   const takeaways = [
-    { at: 3, text: 'The per-query cost is small. The daily aggregate, at the scale these tools now run, is a city. Both numbers are true.' },
-    { at: 5, text: 'Vendor-reported numbers run around ten times lower than peer-reviewed ones. Know which you are quoting, and say so.' },
-    { at: 8, text: 'The question is not "should I use this?" It is "was what I got worth what it cost?" That answer is yours to give.' },
+    { at: 2, text: 'Every energy estimate reflects a scope choice. Compute, overhead, grid, water - and who picked the method - drive the headline number.' },
+    { at: 3, text: 'Vendor-reported numbers run around ten times lower than peer-reviewed ones. Know which you are quoting, and say so.' },
+    { at: 5, text: 'The per-query cost is small. The daily aggregate, at the scale these tools now run, is a city. Both numbers are true.' },
+    { at: 9, text: 'Using AI is a value judgement. Like any choice with a footprint - a flight, a burger, a new phone - ask if it was really necessary. Stay critical. Stay aware.' },
   ];
   const takeawaysActive = $derived(careFootprintStage.reveal(takeaways[0].at));
 
@@ -136,67 +137,59 @@
       </div>
     {/if}
 
-    <!-- Stage 2 - activity breakdown -->
+    <!-- Stage 2 - methodology primer: how energy per token is counted [TAKEAWAY 1] -->
     {#if careFootprintStage.reveal(2)}
-      <div class="breakdown-card" data-staged="true">
-        <div class="bc-head">
-          <span class="bc-badge">Where the energy went</span>
-          <span class="bc-title">4.5 kWh (mid), by activity.</span>
+      <div class="methodology-card" data-staged="true">
+        <div class="mth-head">
+          <span class="mth-badge">How the number is counted</span>
+          <span class="mth-title">What goes into "energy per token", in plain English.</span>
         </div>
-        <div class="bc-stack">
-          {#each breakdown as b, i (b.label)}
-            <div class="bc-row" style:--i={i}>
-              <div class="bc-label">
-                <div class="bc-l-title">{b.label}</div>
-                <div class="bc-l-detail">{b.detail}</div>
-              </div>
-              <div class="bc-bar-track">
-                <div class="bc-bar-fill" style:width="{(b.kWh / breakdownTotal) * 100}%"></div>
-              </div>
-              <div class="bc-num">{b.kWh.toFixed(2)} kWh</div>
+        <div class="mth-steps">
+          <div class="mth-step">
+            <span class="mth-step-num">01</span>
+            <div class="mth-step-body">
+              <span class="mth-step-title">Compute.</span>
+              <p class="mth-step-text">
+                The chip uses electricity to generate each token.
+                A data-centre overhead multiplier (PUE) wraps in
+                cooling, lights, and networking on top.
+              </p>
             </div>
-          {/each}
+          </div>
+          <div class="mth-step">
+            <span class="mth-step-num">02</span>
+            <div class="mth-step-body">
+              <span class="mth-step-title">Grid.</span>
+              <p class="mth-step-text">
+                Electricity becomes CO<sub>2</sub> based on what
+                sits on the grid where the data centre is. How you
+                count the mix - <em>location-based</em> (physics) or
+                <em>market-based</em> (accounting) - changes the
+                answer.
+              </p>
+            </div>
+          </div>
+          <div class="mth-step">
+            <span class="mth-step-num">03</span>
+            <div class="mth-step-body">
+              <span class="mth-step-title">Water.</span>
+              <p class="mth-step-text">
+                Direct cooling at the facility, plus the water the
+                power stations upstream use. Vendor reports often
+                count only the first.
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="bc-foot">
-          <strong>Output dominates.</strong> Generating text, thinking
-          tokens, and tool-call arguments is sequential and
-          memory-bandwidth-bound; decode is where real electricity burns.
-          Prompt caching keeps cached-input nearly free.
+        <div class="mth-foot">
+          Which figure you read depends on who counted, and what
+          they chose to include.
         </div>
       </div>
     {/if}
 
-    <!-- Stage 3 - comparison ladder [TAKEAWAY 1] -->
+    <!-- Stage 3 - vendor vs independent gap (set the scope bar early) [TAKEAWAY 2] -->
     {#if careFootprintStage.reveal(3)}
-      <div class="ladder-card" data-staged="true">
-        <div class="lc-head">
-          <span class="lc-badge">The comparison ladder</span>
-          <span class="lc-title">CO<sub>2</sub>e, from a Google search to a flight. Log scale.</span>
-        </div>
-        <div class="lc-rows">
-          {#each ladder as l, i (l.label)}
-            <div class="lc-row" class:highlight={l.highlight} style:--i={i}>
-              <div class="lc-l">{l.label}</div>
-              <div class="lc-bar-track">
-                <div class="lc-bar-fill" style:width="{ladderWidthPct(l.gCO2)}%"></div>
-              </div>
-              <div class="lc-value">{fmtG(l.gCO2)}</div>
-              <div class="lc-note">{l.note}</div>
-            </div>
-          {/each}
-        </div>
-        <div class="lc-foot">
-          One LHR-JFK return trip per passenger is about
-          <strong>a thousand of this whole project</strong>. A single
-          cotton T-shirt is about <strong>four</strong>. We
-          did two months of work and emitted roughly
-          <strong>one cheeseburger</strong>.
-        </div>
-      </div>
-    {/if}
-
-    <!-- Stage 4 - vendor vs independent gap -->
-    {#if careFootprintStage.reveal(4)}
       <div class="versus-card" data-staged="true">
         <div class="vc-head">
           <span class="vc-badge">Read the fine print</span>
@@ -246,15 +239,76 @@
           (direct cooling only, market-based renewable matching, short
           chat queries). Independent researchers report a fuller
           accounting (upstream power-plant water, location-based
-          marginal-grid emissions, reasoning-heavy workloads). For the
-          talk: prefer <strong>location-based</strong> carbon and the
-          <strong>Ren range</strong> for water, and say so.
+          marginal-grid emissions, reasoning-heavy workloads). For
+          this talk: we use <strong>location-based</strong> carbon
+          and the <strong>Ren range</strong> for water. The vendor
+          numbers stay on the slide for contrast, not as our
+          source.
         </div>
       </div>
     {/if}
 
-    <!-- Stage 5 - training vs inference [TAKEAWAY 2] -->
+    <!-- Stage 4 - activity breakdown -->
+    {#if careFootprintStage.reveal(4)}
+      <div class="breakdown-card" data-staged="true">
+        <div class="bc-head">
+          <span class="bc-badge">Where the energy went</span>
+          <span class="bc-title">4.5 kWh (mid), by activity.</span>
+        </div>
+        <div class="bc-stack">
+          {#each breakdown as b, i (b.label)}
+            <div class="bc-row" style:--i={i}>
+              <div class="bc-label">
+                <div class="bc-l-title">{b.label}</div>
+                <div class="bc-l-detail">{b.detail}</div>
+              </div>
+              <div class="bc-bar-track">
+                <div class="bc-bar-fill" style:width="{(b.kWh / breakdownTotal) * 100}%"></div>
+              </div>
+              <div class="bc-num">{b.kWh.toFixed(2)} kWh</div>
+            </div>
+          {/each}
+        </div>
+        <div class="bc-foot">
+          <strong>Output dominates.</strong> Generating text, thinking
+          tokens, and tool-call arguments is sequential and
+          memory-bandwidth-bound; decode is where real electricity burns.
+          Prompt caching keeps cached-input nearly free.
+        </div>
+      </div>
+    {/if}
+
+    <!-- Stage 5 - comparison ladder [TAKEAWAY 3] -->
     {#if careFootprintStage.reveal(5)}
+      <div class="ladder-card" data-staged="true">
+        <div class="lc-head">
+          <span class="lc-badge">The comparison ladder</span>
+          <span class="lc-title">CO<sub>2</sub>e, from a Google search to a flight. Log scale.</span>
+        </div>
+        <div class="lc-rows">
+          {#each ladder as l, i (l.label)}
+            <div class="lc-row" class:highlight={l.highlight} style:--i={i}>
+              <div class="lc-l">{l.label}</div>
+              <div class="lc-bar-track">
+                <div class="lc-bar-fill" style:width="{ladderWidthPct(l.gCO2)}%"></div>
+              </div>
+              <div class="lc-value">{fmtG(l.gCO2)}</div>
+              <div class="lc-note">{l.note}</div>
+            </div>
+          {/each}
+        </div>
+        <div class="lc-foot">
+          One LHR-JFK return trip per passenger is about
+          <strong>a thousand of this whole project</strong>. A single
+          cotton T-shirt is about <strong>four</strong>. We
+          did two months of work and emitted roughly
+          <strong>one cheeseburger</strong>.
+        </div>
+      </div>
+    {/if}
+
+    <!-- Stage 6 - training vs inference [TAKEAWAY 3] -->
+    {#if careFootprintStage.reveal(6)}
       <div class="flip-card" data-staged="true">
         <div class="fc-head">
           <span class="fc-badge">The common misconception</span>
@@ -290,8 +344,8 @@
       </div>
     {/if}
 
-    <!-- Stage 6 - aggregate scale-up -->
-    {#if careFootprintStage.reveal(6)}
+    <!-- Stage 7 - aggregate scale-up -->
+    {#if careFootprintStage.reveal(7)}
       <div class="aggregate-card" data-staged="true">
         <div class="ac-head">
           <span class="ac-badge warn">The aggregate</span>
@@ -322,8 +376,8 @@
       </div>
     {/if}
 
-    <!-- Stage 7 - caveats -->
-    {#if careFootprintStage.reveal(7)}
+    <!-- Stage 8 - caveats -->
+    {#if careFootprintStage.reveal(8)}
       <div class="caveats-card" data-staged="true">
         <div class="cv-head">
           <span class="cv-badge">What the talk must not skip</span>
@@ -369,16 +423,25 @@
       </div>
     {/if}
 
-    <!-- Stage 8 - closer [TAKEAWAY 3] -->
-    {#if careFootprintStage.reveal(8)}
+    <!-- Stage 9 - closer [TAKEAWAY 4] -->
+    {#if careFootprintStage.reveal(9)}
       <div class="closer" data-staged="true">
         <div class="cl-label">The right question</div>
         <p class="cl-body">
-          Use the tool. Count what it costs. Decide if what you got
-          was worth what it took. This talk cost about one cheeseburger's
-          worth of CO<sub>2</sub>. I think it was worth it. Other projects
-          won't be. That decision - made honestly, with real numbers - is
-          the craft.
+          Using AI is a value judgement - like flying abroad
+          versus staying closer to home, like a steak versus a
+          bowl of lentils, like a new phone versus the one that
+          still works. Each is a fair thing to want. Each carries
+          a cost that is not yours alone.
+        </p>
+        <p class="cl-body">
+          This talk cost about one cheeseburger's worth of
+          CO<sub>2</sub>. I think it was worth it - making you
+          aware of that very cost is, itself, the payoff. Other
+          work will not clear that bar. The craft is not to stop
+          using the tool. It is to stay critical and aware every
+          time you reach for it, and ask: <em>is this really
+          necessary?</em>
         </p>
       </div>
     {/if}
@@ -458,7 +521,112 @@
     line-height: 1.5;
   }
 
-  /* === Breakdown card (stage 2) ====================================== */
+  /* === Methodology card (stage 2) - how energy per token is counted == */
+
+  .methodology-card {
+    padding: 28px 32px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    animation: fade-in 0.55s ease-out;
+  }
+
+  .mth-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .mth-badge {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--gradient-accent);
+    padding: 5px 12px;
+    border-radius: 6px;
+  }
+
+  .mth-title {
+    font-family: var(--font-sans);
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--color-text);
+  }
+
+  .mth-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mth-step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    align-items: baseline;
+    padding: 18px 22px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+  }
+
+  .mth-step-num {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--color-ai-mid);
+    letter-spacing: 0.08em;
+  }
+
+  .mth-step-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .mth-step-title {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    color: var(--color-text);
+  }
+
+  .mth-step-text {
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  .mth-step-text em {
+    font-style: italic;
+    color: var(--color-ai-mid);
+  }
+
+  .mth-foot {
+    margin-top: 4px;
+    padding: 14px 18px;
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid var(--color-tool-border);
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--color-text);
+  }
+
+  /* === Breakdown card (stage 3) ====================================== */
 
   .breakdown-card {
     padding: 28px 32px;
@@ -1133,6 +1301,16 @@
     line-height: 1.45;
     color: var(--color-text);
     font-weight: 400;
+  }
+
+  .cl-body + .cl-body {
+    margin-top: 16px;
+  }
+
+  .cl-body em {
+    font-style: italic;
+    color: var(--color-ai-mid);
+    font-weight: 500;
   }
 
   /* === Takeaways rail (shared) ======================================= */

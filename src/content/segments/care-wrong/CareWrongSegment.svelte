@@ -18,7 +18,7 @@
   const takeaways = [
     { at: 2, text: 'Fluency and confidence are not evidence. Verify everything that matters.' },
     { at: 4, text: 'The subtle failures are the dangerous ones - they pass the first glance.' },
-    { at: 6, text: 'Thinking and tools reduce errors; they do not remove them. Verification stays yours.' },
+    { at: 6, text: 'The agent cannot reliably check itself. Make layered scrutiny the default.' },
   ];
   const takeawaysActive = $derived(careWrongStage.reveal(takeaways[0].at));
 
@@ -189,47 +189,57 @@
       </div>
     {/if}
 
-    <!-- Stage 5 - why even thinking + tools don't fix it -->
+    <!-- Stage 5 - practical takeaways: layered scrutiny -->
     {#if careWrongStage.reveal(5)}
       <div class="mitigation-card" data-staged="true">
         <div class="mc-head">
-          <span class="mc-badge">What helps</span>
-          <span class="mc-title">Thinking and tools narrow the gap. They do not close it.</span>
+          <span class="mc-badge">Practices</span>
+          <span class="mc-title">Four layers of scrutiny. Stack them; do not rely on any one.</span>
         </div>
         <div class="mc-body">
           <p>
-            Giving the agent a thinking phase reduces obvious errors.
-            Giving it tools to check its work catches more. But the
-            agent is still the one deciding when to stop checking,
-            when to call something good enough, when to trust its
-            own previous reasoning.
+            You cannot train the agent out of being confidently
+            wrong. You can stack cheap layers of scrutiny on top of
+            it, so the mistakes surface early - while you still have
+            time to do something about them.
           </p>
           <div class="mc-rules">
             <div class="mc-rule">
               <span class="mr-num">01</span>
               <span class="mr-body">
-                <strong>Decide what "correct" means</strong> before
-                you look at the output. Accessibility ratios.
-                Typographic hierarchy. User-flow step counts.
-                Measure against that, not against the vibe.
+                <strong>Keep memory, progress and decisions transparent</strong>.
+                Shared living docs and session logs give humans
+                something legible to judge against when the agent
+                drifts. If you cannot see what it decided and why,
+                you cannot catch where it went wrong.
               </span>
             </div>
             <div class="mc-rule">
               <span class="mr-num">02</span>
               <span class="mr-body">
-                <strong>Build the check into the loop</strong>. Ask
-                for the contrast ratio along with the palette. Ask
-                for the unit test along with the function. Cheap
-                verification runs at the same time as generation.
+                <strong>Check output often, not just at milestones</strong>.
+                Short review cadence beats long ones. The longer a
+                confident mistake runs unchecked, the harder it is
+                to unwind.
               </span>
             </div>
             <div class="mc-rule">
               <span class="mr-num">03</span>
               <span class="mr-body">
-                <strong>Keep a human gate on anything subtle</strong>.
-                Visual hierarchy, emotional tone, accessibility,
-                safety - these are where subtle failures live. Do not
-                ship them un-reviewed.
+                <strong>Ask the agent to audit its own work</strong>.
+                "Read this back and tell me where you are uncertain."
+                Ask it to cross-reference its claims against a live
+                web search; recent best practice often contradicts
+                its training.
+              </span>
+            </div>
+            <div class="mc-rule">
+              <span class="mr-num">04</span>
+              <span class="mr-body">
+                <strong>Bring in an adversarial second agent</strong>.
+                A separate thread, fresh context, no stake in the
+                work. "Is this really the right framework for this
+                app?" lands differently coming from a different mouth.
               </span>
             </div>
           </div>

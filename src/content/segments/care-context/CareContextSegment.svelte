@@ -16,9 +16,10 @@
   const railTopY = $derived(viewportTopY + 120);
 
   const takeaways = [
-    { at: 2, text: 'You can feed it what you wrote, what is public, and what was made for AI. Everything else needs consent.' },
-    { at: 6, text: '"Let the agent decide what is sensitive" does not work. By the time it has decided, it has already read.' },
-    { at: 8, text: 'Sensitive data does not enter the pipeline. There is no safe "careful" way to pass it through.' },
+    { at: 2, text: 'Every query leaves your machine. Once sent, your inputs sit on someone else\'s servers - under their retention, their logging, their policy.' },
+    { at: 3, text: 'You can feed it what you wrote, what is public, and what was made for AI. Everything else needs consent.' },
+    { at: 7, text: '"Let the agent decide what is sensitive" does not work. By the time it has decided, it has already read.' },
+    { at: 9, text: 'Sensitive data does not enter the pipeline. There is no safe "careful" way to pass it through.' },
   ];
   const takeawaysActive = $derived(careContextStage.reveal(takeaways[0].at));
 
@@ -136,8 +137,75 @@
       </div>
     {/if}
 
-    <!-- Stage 2 - three zones overview [TAKEAWAY 1] -->
+    <!-- Stage 2 - the fact underneath: every query leaves your machine [TAKEAWAY 1] -->
     {#if careContextStage.reveal(2)}
+      <div class="dataflow-card" data-staged="true">
+        <div class="df-head">
+          <span class="df-badge">The fact underneath</span>
+          <span class="df-title">Every query leaves your machine.</span>
+        </div>
+        <p class="df-body">
+          For almost every AI tool you use, the moment you hit send,
+          your prompt - and any files, notes, or context you
+          attached - travels over the internet to the provider's
+          servers. The model runs there, on their hardware. The
+          reply comes back. Your inputs stay in their system.
+        </p>
+        <div class="df-flow">
+          <div class="df-step" data-tone="you">
+            <div class="df-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="6" width="24" height="16" rx="2"/>
+                <line x1="10" y1="26" x2="22" y2="26"/>
+                <line x1="16" y1="22" x2="16" y2="26"/>
+              </svg>
+            </div>
+            <span class="df-step-num">01</span>
+            <span class="df-step-title">Your device</span>
+            <p class="df-step-text">
+              You type. You attach. You hit send. Everything in the
+              prompt now leaves.
+            </p>
+          </div>
+          <div class="df-arrow" aria-hidden="true">→</div>
+          <div class="df-step" data-tone="cloud">
+            <div class="df-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 22a5 5 0 0 1 .8-9.95 7 7 0 0 1 13.6 1.5A4.5 4.5 0 0 1 23 22Z"/>
+              </svg>
+            </div>
+            <span class="df-step-num">02</span>
+            <span class="df-step-title">Their cloud</span>
+            <p class="df-step-text">
+              The model runs in a data centre you do not control,
+              on hardware that is not yours.
+            </p>
+          </div>
+          <div class="df-arrow" aria-hidden="true">→</div>
+          <div class="df-step" data-tone="kept">
+            <div class="df-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="10" width="22" height="16" rx="2"/>
+                <path d="M10 10V7a6 6 0 0 1 12 0v3"/>
+              </svg>
+            </div>
+            <span class="df-step-num">03</span>
+            <span class="df-step-title">Retained</span>
+            <p class="df-step-text">
+              The reply comes back. Your inputs stay - under their
+              retention, logging, and policy.
+            </p>
+          </div>
+        </div>
+        <div class="df-foot">
+          This is why <strong>what you put in</strong> matters. Once
+          it has left your machine, you cannot recall it.
+        </div>
+      </div>
+    {/if}
+
+    <!-- Stage 3 - three zones overview [TAKEAWAY 2] -->
+    {#if careContextStage.reveal(3)}
       <div class="zones-card" data-staged="true">
         <div class="zc-head">
           <span class="zc-badge">Three zones</span>
@@ -161,8 +229,8 @@
       </div>
     {/if}
 
-    <!-- Stage 3 - "your own stuff" - design note on what fair covers -->
-    {#if careContextStage.reveal(3)}
+    <!-- Stage 4 - "your own stuff" - design note on what fair covers -->
+    {#if careContextStage.reveal(4)}
       <div class="callout" data-staged="true">
         <div class="co-label">A permission, not a blank cheque</div>
         <p class="co-body">
@@ -175,8 +243,8 @@
       </div>
     {/if}
 
-    <!-- Stage 4 - "never" zone deep dive -->
-    {#if careContextStage.reveal(4)}
+    <!-- Stage 5 - "never" zone deep dive -->
+    {#if careContextStage.reveal(5)}
       <div class="callout danger" data-staged="true">
         <div class="co-label">The "never" zone is non-negotiable</div>
         <p class="co-body">
@@ -189,8 +257,8 @@
       </div>
     {/if}
 
-    <!-- Stage 5 - the subtle trap setup -->
-    {#if careContextStage.reveal(5)}
+    <!-- Stage 6 - the subtle trap setup -->
+    {#if careContextStage.reveal(6)}
       <div class="trap-setup" data-staged="true">
         <div class="ts-head">
           <span class="ts-badge">The intuitive workaround</span>
@@ -212,8 +280,8 @@
       </div>
     {/if}
 
-    <!-- Stage 6 - THE TRAP [TAKEAWAY 2] - the core beat -->
-    {#if careContextStage.reveal(6)}
+    <!-- Stage 7 - THE TRAP [TAKEAWAY 3] - the core beat -->
+    {#if careContextStage.reveal(7)}
       <div class="trap-card" data-staged="true">
         <div class="tc-head">
           <span class="tc-badge">The trap</span>
@@ -246,8 +314,8 @@
       </div>
     {/if}
 
-    <!-- Stage 7 - worked scenario: thesis -->
-    {#if careContextStage.reveal(7)}
+    <!-- Stage 8 - worked scenario: thesis -->
+    {#if careContextStage.reveal(8)}
       <div class="scenario-card" data-staged="true">
         <div class="sc-head">
           <span class="sc-badge">Worked scenario</span>
@@ -291,8 +359,8 @@
       </div>
     {/if}
 
-    <!-- Stage 8 - closer [TAKEAWAY 3] -->
-    {#if careContextStage.reveal(8)}
+    <!-- Stage 9 - closer [TAKEAWAY 4] -->
+    {#if careContextStage.reveal(9)}
       <div class="closer" data-staged="true">
         <div class="cl-label">The one-line rule</div>
         <p class="cl-body">
@@ -409,6 +477,142 @@
     font-size: 25px;
     line-height: 1.5;
     color: var(--color-text);
+  }
+
+  /* === Dataflow card - the "your data leaves" fact ==================== */
+
+  .dataflow-card {
+    padding: 28px 32px;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    background:
+      linear-gradient(180deg, rgba(245, 158, 11, 0.08), transparent 60%),
+      rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    animation: fade-in 0.55s ease-out;
+  }
+
+  .df-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .df-badge {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: white;
+    background: rgba(245, 158, 11, 0.85);
+    padding: 5px 12px;
+    border-radius: 6px;
+  }
+
+  .df-title {
+    font-family: var(--font-sans);
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .df-body {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  .df-flow {
+    display: grid;
+    grid-template-columns: 1fr 32px 1fr 32px 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .df-step {
+    padding: 20px 20px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .df-step[data-tone='you'] {
+    border-left: 3px solid rgba(96, 165, 250, 0.55);
+    color: rgba(96, 165, 250, 1);
+  }
+
+  .df-step[data-tone='cloud'] {
+    border-left: 3px solid rgba(245, 158, 11, 0.7);
+    color: rgba(245, 158, 11, 1);
+  }
+
+  .df-step[data-tone='kept'] {
+    border-left: 3px solid rgba(248, 113, 113, 0.6);
+    color: rgba(248, 113, 113, 1);
+  }
+
+  .df-step-icon {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    color: inherit;
+  }
+
+  .df-step-num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: var(--color-text-subtle);
+  }
+
+  .df-step-title {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: inherit;
+  }
+
+  .df-step-text {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--color-text);
+  }
+
+  .df-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--color-text-subtle);
+  }
+
+  .df-foot {
+    padding: 14px 18px;
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid var(--color-tool-border);
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--color-text);
+  }
+
+  .df-foot strong {
+    color: var(--color-ai-mid);
+    font-weight: 600;
   }
 
   /* === Zones card - the three-zone core visual. ==================== */

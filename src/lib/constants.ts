@@ -1,3 +1,9 @@
+// Fixed 16:9 stage the whole presentation lives inside. The stage is CSS-scaled
+// to fit any viewport (contain / letterbox), so world coordinates are stable
+// regardless of window size or aspect ratio.
+export const STAGE_WIDTH = 1920;
+export const STAGE_HEIGHT = 1080;
+
 export const DEFAULTS = {
   camera: {
     x: 0,

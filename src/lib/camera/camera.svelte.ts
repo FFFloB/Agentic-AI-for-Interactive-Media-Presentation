@@ -1,14 +1,16 @@
 import gsap from 'gsap';
 import type { CameraTarget, AnimationOptions } from '$lib/types';
-import { DEFAULTS } from '$lib/constants';
+import { DEFAULTS, STAGE_WIDTH, STAGE_HEIGHT } from '$lib/constants';
 
 class CameraState {
   x: number = $state(DEFAULTS.camera.x);
   y: number = $state(DEFAULTS.camera.y);
   zoom: number = $state(DEFAULTS.camera.zoom);
 
-  viewportWidth = $state(window.innerWidth);
-  viewportHeight = $state(window.innerHeight);
+  // Stage-space dimensions: the camera operates inside a fixed 1920x1080 box.
+  // The stage itself is CSS-scaled to fit the real window (see CameraViewport).
+  readonly viewportWidth = STAGE_WIDTH;
+  readonly viewportHeight = STAGE_HEIGHT;
 
   private activeTween: gsap.core.Tween | null = null;
 
@@ -16,11 +18,6 @@ class CameraState {
     const tx = -this.x * this.zoom + this.viewportWidth / 2;
     const ty = -this.y * this.zoom + this.viewportHeight / 2;
     return `translate(${tx}px, ${ty}px) scale(${this.zoom})`;
-  }
-
-  updateViewport(width: number, height: number) {
-    this.viewportWidth = width;
-    this.viewportHeight = height;
   }
 
   animateTo(target: CameraTarget, options?: AnimationOptions): gsap.core.Tween {

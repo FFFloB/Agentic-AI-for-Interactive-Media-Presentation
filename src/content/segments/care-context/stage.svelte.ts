@@ -1,10 +1,12 @@
 import type { StageController } from '$lib/types';
 
-// "What you put in" - ethics of context engineering. Three zones, the
-// subtle trap, a worked scenario, a single clear rule.
+// "What you put in" - ethics of context engineering. Nine stages:
+// framing -> cloud-processing reality (the fact underneath) -> three
+// zones -> "your own" permission nuance -> "never" zone -> trap setup ->
+// the trap -> thesis scenario -> closer.
 class CareContextStage implements StageController {
   stageIndex = $state(0);
-  readonly maxStage = 8;
+  readonly maxStage = 9;
 
   advance(): boolean {
     if (this.stageIndex < this.maxStage) {

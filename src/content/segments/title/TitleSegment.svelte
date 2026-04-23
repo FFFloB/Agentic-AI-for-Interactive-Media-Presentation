@@ -11,7 +11,7 @@
 
 <div class="title-root" data-segment-root>
   <div class="title-content">
-    <span class="eyebrow">Session 6</span>
+    <span class="eyebrow">Prof Florian Block</span>
     <h1 class="title-line-1 headline-gradient">Agentic AI</h1>
     <h2 class="title-line-2">for Interactive Media Creation</h2>
     <p class="invitation">Bring your scepticism and your curiosity.</p>

@@ -22,57 +22,62 @@
   const groups: Group[] = [
     {
       stage: 1,
+      label: 'Mechanical limits',
+      accent: 'mechanical',
+      beats: [
+        {
+          num: '01',
+          title: 'Confidently wrong',
+          blurb: 'Plausible, fluent, and off. The subtle failures are the dangerous ones.',
+        },
+        {
+          num: '02',
+          title: 'The agreement trap',
+          blurb: 'The agent tries to please. Lead it and you lose a critical partner.',
+        },
+        {
+          num: '03',
+          title: 'The visual gap',
+          blurb: 'UI, UX, animation, interactivity. Still a human call, on purpose.',
+        },
+      ],
+    },
+    {
+      stage: 2,
       label: 'Legal + ownership',
       accent: 'legal',
       beats: [
         {
-          num: '01',
+          num: '04',
           title: 'What went in',
           blurb: 'Training data provenance. What paid services will and will not stand behind.',
         },
         {
-          num: '02',
+          num: '05',
           title: 'Who owns this?',
           blurb: 'Copyrightability of what you ship. Human contribution is the line that matters.',
         },
       ],
     },
     {
-      stage: 2,
+      stage: 3,
       label: 'Ethical practice',
       accent: 'ethical',
       beats: [
         {
-          num: '03',
-          title: 'Name your collaborators',
-          blurb: 'Declare what was made with the agent. Session logs as a lightweight pattern.',
-        },
-        {
-          num: '04',
+          num: '06',
           title: 'What you put in',
           blurb: 'What the agent can read, what it cannot, and why "just do not ingest it" fails.',
         },
-      ],
-    },
-    {
-      stage: 3,
-      label: 'Mechanical limits',
-      accent: 'mechanical',
-      beats: [
-        {
-          num: '05',
-          title: 'Confidently wrong',
-          blurb: 'Plausible, fluent, and off. The subtle failures are the dangerous ones.',
-        },
-        {
-          num: '06',
-          title: 'The agreement trap',
-          blurb: 'The agent tries to please. Lead it and you lose a critical partner.',
-        },
         {
           num: '07',
-          title: 'The visual gap',
-          blurb: 'UI, UX, animation, interactivity. Still a human call, on purpose.',
+          title: 'Name your collaborators',
+          blurb: 'Declare what was made with the agent. Session logs as a lightweight pattern. A live audit of this talk.',
+        },
+        {
+          num: '08',
+          title: 'Environment impact',
+          blurb: 'How much energy and water one session costs, and what the whole-industry scale-up looks like.',
         },
       ],
     },
@@ -84,9 +89,9 @@
     <span class="eyebrow">The fine print</span>
     <h1 class="headline-gradient">Where care is required</h1>
     <p class="subhead">
-      Seven places agentic AI needs a careful hand. Three flavours: what
-      the law says, what good practice asks of you, and where the model
-      itself still falls short.
+      Eight places agentic AI needs a careful hand. Three flavours: where
+      the model itself still falls short, what the law says, and what good
+      practice asks of you.
     </p>
   </header>
 
@@ -179,8 +184,8 @@
 
   .groups {
     display: grid;
-    /* Widths roughly proportional to card count: 2 / 2 / 3. */
-    grid-template-columns: 1fr 1fr 1.4fr;
+    /* Widths roughly proportional to card count: 3 / 2 / 3. */
+    grid-template-columns: 1.4fr 1fr 1.4fr;
     gap: 40px;
     min-height: 0;
   }

@@ -18,7 +18,7 @@
   const takeaways = [
     { at: 3, text: 'Declaring AI use is the default at York and across UK higher education. Vague declarations read as hiding.' },
     { at: 5, text: 'Name your collaborators. Describe their role, describe what you did. A case study of process beats a glossy output.' },
-    { at: 7, text: 'Session logs are a cheap, durable way to keep your practice honest. Start one for every project.' },
+    { at: 8, text: 'Transparency is not a disclaimer you paste on. It is infrastructure you build into your practice.' },
   ];
   const takeawaysActive = $derived(careAttributionStage.reveal(takeaways[0].at));
 
@@ -44,12 +44,26 @@
     const last = staged[staged.length - 1];
     if (!last) return;
     const { y: lastTopY } = offsetWithin(last, rootEl);
-    const elemBottomWorldY = lastTopY + last.offsetHeight;
-    const viewportWorldHeight = camera.viewportHeight / camera.zoom;
-    const anchor = 0.85;
-    const desiredCameraY = elemBottomWorldY - viewportWorldHeight * (anchor - 0.5);
-    const minY = viewportWorldHeight / 2;
-    const maxY = Math.max(minY, seg.height - viewportWorldHeight / 2);
+    const elemHeight = last.offsetHeight;
+    const elemBottomWorldY = lastTopY + elemHeight;
+    const vpH = camera.viewportHeight / camera.zoom;
+
+    // If the element fits comfortably, anchor its bottom low (85% down) so
+    // the finished thought sits naturally in the viewport. If the element is
+    // taller than that window allows, flip the anchor: pin the top of the
+    // element near the top of the viewport, so the header/title is visible
+    // instead of cropping above the visible area.
+    const topAnchor = 0.12;     // element top at 12% from viewport top
+    const bottomAnchor = 0.85;  // element bottom at 85% from viewport top
+    const maxComfortableHeight = vpH * (bottomAnchor - topAnchor);
+
+    const desiredCameraY =
+      elemHeight <= maxComfortableHeight
+        ? elemBottomWorldY - vpH * (bottomAnchor - 0.5)
+        : lastTopY + vpH * (0.5 - topAnchor);
+
+    const minY = vpH / 2;
+    const maxY = Math.max(minY, seg.height - vpH / 2);
     const y = Math.max(minY, Math.min(maxY, desiredCameraY));
     if (Math.abs(y - camera.y) < 2) return;
     camera.scrollTo(y, {
@@ -58,16 +72,6 @@
     });
   }
 
-  // Placeholder audit-log excerpt. Real session-log rendering is a
-  // future implementation; for now this illustrates the pattern
-  // convincingly enough for a live demo beat.
-  const sessionExcerpt = [
-    { time: '14:32', actor: 'you', text: 'Design segment 5: "From prompt to context". Key: the chart is pinned, scroll content is left.' },
-    { time: '14:34', actor: 'ai', text: 'Drafted 25-stage scroll + pinned chart; bubbles build, callouts punctuate, takeaways land at the end.' },
-    { time: '14:48', actor: 'you', text: 'Templated exemplars only, headlines stay hand-authored.' },
-    { time: '14:51', actor: 'ai', text: 'Split content into technical / design variants; thread "Plate" through bubbles + dialog sample.' },
-    { time: '15:07', actor: 'you', text: 'Gentler language in the warn callouts. Keep "you own what ships" rule.' },
-  ];
 </script>
 
 <div
@@ -253,45 +257,98 @@
       </div>
     {/if}
 
-    <!-- Stage 7 - live audit-log demo [TAKEAWAY 3] -->
+    <!-- Stage 7 - what I did, and what I did NOT do -->
     {#if careAttributionStage.reveal(7)}
-      <div class="session-card" data-staged="true">
-        <div class="ss-head">
-          <span class="ss-badge">Live demonstration</span>
-          <span class="ss-title">How this very talk was built.</span>
+      <div class="practice-card" data-staged="true">
+        <div class="pc-head">
+          <span class="pc-badge">How this talk was built</span>
+          <span class="pc-title">My hands, and the tool's.</span>
         </div>
-        <div class="ss-intro">
-          <p>
-            An excerpt from this presentation's own session audit,
-            shown live. Every contribution to every segment is
-            logged, with AI turns marked and human decisions
-            preserved. Not a trust exercise, a paper trail.
-          </p>
-        </div>
-        <div class="ss-log">
-          {#each sessionExcerpt as row, i (i)}
-            <div class="ss-row" data-actor={row.actor} style:--i={i}>
-              <span class="ss-time">{row.time}</span>
-              <span class="ss-actor">{row.actor === 'ai' ? 'ai' : 'you'}</span>
-              <span class="ss-text">{row.text}</span>
-            </div>
-          {/each}
-          <div class="ss-ellipsis">+ 340 more entries across 18 sessions</div>
-        </div>
-        <div class="sc-meaning">
-          <span class="sm-label">Why this pattern</span>
-          <p class="sm-body-p">
-            Lightweight. Human-readable. Preserves decisions as
-            well as edits. If someone asks three months from now
-            <em>"why does this segment say what it says?"</em> -
-            you can point to the line that decided it.
-          </p>
+        <p class="pc-intro">
+          An honest split. The pedagogy, the arguments, the
+          ordering, and every final decision are mine. The code, the
+          micro-layout, and every first-draft of the specific copy
+          you are reading came from the agent - reviewed, corrected,
+          and approved by me. The ideas are mine; many of the exact
+          sentences were drafted by the tool and pass through my
+          judgement before they land here.
+        </p>
+        <div class="pc-cols">
+          <div class="pc-col did">
+            <div class="pc-col-heading">What I did</div>
+            <ul>
+              <li>Designed the pedagogy and the learning arc - what you are learning, and why in this order.</li>
+              <li>Every key argument and learning. Drawn from twenty years as a researcher and creative practitioner.</li>
+              <li>Shaped the experience: interactive traversal, the shape of each card, the overall style.</li>
+              <li>Reviewed, pushed back on, corrected, and approved every card, takeaway, and example that ships.</li>
+            </ul>
+          </div>
+          <div class="pc-col did-not">
+            <div class="pc-col-heading">What I did NOT do</div>
+            <ul>
+              <li>Write every line of code.</li>
+              <li>Make the micro-decisions on layout, typography, and formatting.</li>
+              <li>Aggregate and summarise the desk research by hand.</li>
+              <li>Hand author every bit of text.</li>
+            </ul>
+          </div>
         </div>
       </div>
     {/if}
 
-    <!-- Stage 8 - closer -->
+    <!-- Stage 8 - what I set up for you to use [TAKEAWAY 3] -->
     {#if careAttributionStage.reveal(8)}
+      <div class="transparency-card" data-staged="true">
+        <div class="tx-head">
+          <span class="tx-badge">The transparency you get</span>
+          <span class="tx-title">What I explicitly set up for you to use.</span>
+        </div>
+        <p class="tx-intro">
+          More than a declaration. Three things built into this talk
+          so you can learn from how it was made, not just what came
+          out:
+        </p>
+        <div class="tx-rows">
+          <div class="tx-row">
+            <span class="tx-num">01</span>
+            <div class="tx-body">
+              <span class="tx-title-text">A system of maximum transparency.</span>
+              <p class="tx-text">
+                Every session, every decision, every AI turn is
+                logged and browsable. The next segment shows you
+                exactly this, live.
+              </p>
+            </div>
+          </div>
+          <div class="tx-row">
+            <span class="tx-num">02</span>
+            <div class="tx-body">
+              <span class="tx-title-text">A granular view of how I prompt and work with the agent.</span>
+              <p class="tx-text">
+                Not just what came out, but how I got there - the
+                prompts, the pushback, the course corrections. A
+                pattern you can adopt in your own practice.
+              </p>
+            </div>
+          </div>
+          <div class="tx-row">
+            <span class="tx-num">03</span>
+            <div class="tx-body">
+              <span class="tx-title-text">A clear line between what is mine and what is the tool's.</span>
+              <p class="tx-text">
+                At every layer of this talk - the ideas, the copy,
+                the code, the design. Ask "who did that" about any
+                beat and the audit has an answer.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    {/if}
+
+    <!-- Stage 9 - closer -->
+    {#if careAttributionStage.reveal(9)}
       <div class="closer" data-staged="true">
         <div class="cl-label">The rule underneath all of it</div>
         <p class="cl-body">
@@ -499,11 +556,6 @@
     color: var(--color-text);
   }
 
-  .sm-body-p em {
-    font-style: italic;
-    color: var(--color-ai-mid);
-  }
-
   .sm-note {
     margin: 6px 0 0 0;
     font-size: 20px;
@@ -672,9 +724,9 @@
     border-top: 1px solid var(--color-border);
   }
 
-  /* === Session card - live audit-log demo ========================== */
+  /* === Practice card (did / did NOT split) ========================= */
 
-  .session-card {
+  .practice-card {
     border: 1px solid var(--color-border-strong);
     background: rgba(255, 255, 255, 0.02);
     border-radius: var(--radius-lg);
@@ -685,7 +737,7 @@
     animation: fade-in 0.55s ease-out;
   }
 
-  .ss-head {
+  .pc-head {
     display: flex;
     align-items: baseline;
     gap: 16px;
@@ -694,7 +746,7 @@
     flex-wrap: wrap;
   }
 
-  .ss-badge {
+  .pc-badge {
     font-family: var(--font-mono);
     font-size: 14px;
     letter-spacing: 0.18em;
@@ -705,7 +757,7 @@
     border-radius: 6px;
   }
 
-  .ss-title {
+  .pc-title {
     font-family: var(--font-sans);
     font-size: 26px;
     font-weight: 600;
@@ -713,85 +765,189 @@
     color: var(--color-text);
   }
 
-  .ss-intro p {
+  .pc-intro {
     margin: 0;
-    font-size: 22px;
+    font-size: 21px;
     line-height: 1.55;
     color: var(--color-text-muted);
   }
 
-  .ss-log {
-    background: var(--color-code-bg);
-    border: 1px solid var(--color-code-border);
+  .pc-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .pc-col {
+    padding: 22px 24px;
     border-radius: 10px;
-    padding: 18px 20px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pc-col.did {
+    background: rgba(74, 222, 128, 0.05);
+    border-color: rgba(74, 222, 128, 0.35);
+  }
+
+  .pc-col.did-not {
+    background: rgba(248, 113, 113, 0.05);
+    border-color: rgba(248, 113, 113, 0.35);
+  }
+
+  .pc-col-heading {
+    font-family: var(--font-sans);
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+  }
+
+  .pc-col.did .pc-col-heading {
+    color: var(--color-success);
+  }
+
+  .pc-col.did-not .pc-col-heading {
+    color: var(--color-error);
+  }
+
+  .pc-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
 
-  .ss-row {
-    display: grid;
-    grid-template-columns: 72px 64px 1fr;
-    gap: 18px;
+  .pc-col li {
+    font-size: 19px;
+    line-height: 1.45;
+    color: var(--color-text);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .pc-col li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 10px;
+    height: 2px;
+  }
+
+  .pc-col.did li::before {
+    background: var(--color-success);
+  }
+
+  .pc-col.did-not li::before {
+    background: var(--color-error);
+  }
+
+  /* === Transparency card (what I set up for you + excerpt) =========== */
+
+  .transparency-card {
+    border: 1px solid var(--color-tool-border);
+    background:
+      linear-gradient(180deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.04)),
+      rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 30px 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: fade-in 0.55s ease-out;
+    box-shadow: 0 24px 64px -24px rgba(168, 85, 247, 0.28);
+  }
+
+  .tx-head {
+    display: flex;
     align-items: baseline;
-    padding: 10px 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
-    opacity: 0;
-    transform: translateX(6px);
-    animation: row-in 0.4s ease-out forwards;
-    animation-delay: calc(var(--i) * 0.08s);
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-border);
+    flex-wrap: wrap;
   }
 
-  .ss-row:last-of-type {
-    border-bottom: none;
-  }
-
-  .ss-time {
-    font-family: var(--font-mono);
-    font-size: 15px;
-    color: var(--color-text-subtle);
-    letter-spacing: 0.04em;
-  }
-
-  .ss-actor {
+  .tx-badge {
     font-family: var(--font-mono);
     font-size: 14px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 9999px;
-    text-align: center;
-    align-self: start;
-    margin-top: 2px;
+    color: white;
+    background: var(--gradient-accent);
+    padding: 5px 12px;
+    border-radius: 6px;
   }
 
-  .ss-row[data-actor='you'] .ss-actor {
-    background: rgba(52, 211, 153, 0.15);
-    color: var(--color-human);
-    border: 1px solid rgba(52, 211, 153, 0.3);
+  .tx-title {
+    font-family: var(--font-sans);
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    line-height: 1.25;
   }
 
-  .ss-row[data-actor='ai'] .ss-actor {
-    background: rgba(236, 72, 153, 0.15);
-    color: var(--color-ai-mid);
-    border: 1px solid rgba(236, 72, 153, 0.3);
-  }
-
-  .ss-text {
-    font-family: var(--font-mono);
-    font-size: 18px;
+  .tx-intro {
+    margin: 0;
+    font-size: 21px;
     line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  .tx-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .tx-row {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    align-items: baseline;
+    padding: 18px 22px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+  }
+
+  .tx-num {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--color-ai-mid);
+    letter-spacing: 0.08em;
+  }
+
+  .tx-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .tx-title-text {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
     color: var(--color-text);
   }
 
-  .ss-ellipsis {
-    font-family: var(--font-mono);
-    font-size: 15px;
-    color: var(--color-text-subtle);
-    padding-top: 6px;
-    letter-spacing: 0.04em;
+  .tx-text {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--color-text-muted);
   }
+
 
   /* === Closer ===================================================== */
 

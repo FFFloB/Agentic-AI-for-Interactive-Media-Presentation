@@ -1,10 +1,13 @@
 import type { StageController } from '$lib/types';
 
 // "Environmental footprint - the details" - honest numbers with the
-// caveats the talk must not skip. Eight reveals.
+// caveats the talk must not skip. Nine reveals: framing -> methodology
+// primer -> vendor vs peer (fair-scope framing) -> activity breakdown ->
+// comparison ladder -> training vs inference -> aggregate -> caveats ->
+// closer.
 class CareFootprintStage implements StageController {
   stageIndex = $state(0);
-  readonly maxStage = 8;
+  readonly maxStage = 9;
 
   advance(): boolean {
     if (this.stageIndex < this.maxStage) {

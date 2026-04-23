@@ -1,9 +1,10 @@
 import type { StageController } from '$lib/types';
 
-// "Who owns this?" - copyrightability + authorship of AI-assisted work.
+// "Ownership" - is what you ship defensibly yours?
+// Five stages: frame -> three scenarios -> the test -> decision rubric -> closer.
 class CareOwnershipStage implements StageController {
   stageIndex = $state(0);
-  readonly maxStage = 6;
+  readonly maxStage = 5;
 
   advance(): boolean {
     if (this.stageIndex < this.maxStage) {

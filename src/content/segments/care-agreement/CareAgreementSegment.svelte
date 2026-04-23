@@ -18,7 +18,7 @@
   const takeaways = [
     { at: 2, text: 'The agent tells you what you want to hear. That is a failure mode, not a feature.' },
     { at: 4, text: 'Easy agreement is a red flag, not a compliment.' },
-    { at: 6, text: 'Author your context to invite challenge. A good system prompt asks the agent to push back.' },
+    { at: 7, text: 'Frame for pushback. Put it in memory. Ask twice when the answer came back fast.' },
   ];
   const takeawaysActive = $derived(careAgreementStage.reveal(takeaways[0].at));
 
@@ -165,21 +165,68 @@
       </div>
     {/if}
 
-    <!-- Stage 4 - solution: style prompts [TAKEAWAY 2] -->
+    <!-- Stage 4 - three practices (compact; example lives on its own stage) [TAKEAWAY 2] -->
     {#if careAgreementStage.reveal(4)}
       <div class="prompt-card" data-staged="true">
         <div class="pc-head">
           <span class="pc-badge">The fix you control</span>
-          <span class="pc-title">Engineer pushback into the context.</span>
+          <span class="pc-title">Three practices to break the agreement loop.</span>
         </div>
-        <p class="pc-intro">
-          The agent follows instructions. If you instruct it to
-          disagree when it has evidence, to flag assumptions, and
-          to question framings, it does.
+
+        <div class="practice">
+          <span class="p-num">01</span>
+          <div class="p-body">
+            <div class="p-title">Phrase the question to invite scrutiny.</div>
+            <p class="p-text">
+              "What would change your mind?" beats "is this right?"
+              Your framing sets the target. The agent aims at it,
+              literally.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice">
+          <span class="p-num">02</span>
+          <div class="p-body">
+            <div class="p-title">Bake "critical friend" into memory.</div>
+            <p class="p-text">
+              Put the instruction in a memory file the agent reads
+              on startup. Every session begins with disagreement on
+              the table - no need to remember to ask.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice">
+          <span class="p-num">03</span>
+          <div class="p-body">
+            <div class="p-title">Ask again. Especially when the answer came back fast.</div>
+            <p class="p-text">
+              Quick confident replies often skipped the thinking.
+              "Are you sure?" or "Take another pass with more care"
+              exposes the work that did not happen. Treat speed
+              without reasoning as a warning signal.
+            </p>
+          </div>
+        </div>
+      </div>
+    {/if}
+
+    <!-- Stage 5 - the memory-file example (what practice 02 looks like) -->
+    {#if careAgreementStage.reveal(5)}
+      <div class="example-card" data-staged="true">
+        <div class="ex-head">
+          <span class="ex-badge">What practice 02 looks like</span>
+          <span class="ex-title">A critical-friend memory file.</span>
+        </div>
+        <p class="ex-intro">
+          Dropped into a memory file that loads every session, this
+          is what turns a default-agreeing agent into one that
+          pushes back by default.
         </p>
         <div class="pc-prompt">
           <div class="pc-prompt-head">
-            <span class="pc-prompt-label">Example system prompt</span>
+            <span class="pc-prompt-label">Example memory-file instruction</span>
           </div>
           <pre class="pc-prompt-body"><code>You are a critical design partner.
 
@@ -203,8 +250,8 @@ before acting.</code></pre>
       </div>
     {/if}
 
-    <!-- Stage 5 - before/after comparison -->
-    {#if careAgreementStage.reveal(5)}
+    <!-- Stage 6 - before/after comparison -->
+    {#if careAgreementStage.reveal(6)}
       <div class="compare-card" data-staged="true">
         <div class="cc-head">
           <span class="cc-badge">Same question, two agents</span>
@@ -245,8 +292,8 @@ before acting.</code></pre>
       </div>
     {/if}
 
-    <!-- Stage 6 - closer [TAKEAWAY 3] -->
-    {#if careAgreementStage.reveal(6)}
+    <!-- Stage 7 - closer [TAKEAWAY 3] -->
+    {#if careAgreementStage.reveal(7)}
       <div class="closer" data-staged="true">
         <div class="cl-label">A principle you can carry</div>
         <p class="cl-body">
@@ -508,13 +555,6 @@ before acting.</code></pre>
     color: var(--color-text);
   }
 
-  .pc-intro {
-    margin: 0;
-    font-size: 22px;
-    line-height: 1.55;
-    color: var(--color-text-muted);
-  }
-
   .pc-prompt {
     border: 1px solid var(--color-code-border);
     border-radius: 12px;
@@ -545,6 +585,102 @@ before acting.</code></pre>
     margin: 0;
     white-space: pre-wrap;
     overflow-x: auto;
+  }
+
+  /* === Example card - shows the actual memory-file instruction that
+     makes practice 02 work. Sits as its own stage so the content has
+     room to breathe. =============================================== */
+
+  .example-card {
+    border: 1px solid var(--color-border-strong);
+    background:
+      linear-gradient(180deg, rgba(168, 85, 247, 0.08), transparent 60%),
+      rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    animation: fade-in 0.55s ease-out;
+  }
+
+  .ex-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .ex-badge {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--gradient-accent);
+    padding: 5px 12px;
+    border-radius: 6px;
+  }
+
+  .ex-title {
+    font-family: var(--font-sans);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  .ex-intro {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  /* Three practices list inside the prompt card */
+  .practice {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    align-items: baseline;
+    padding: 18px 20px;
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    margin-top: 12px;
+  }
+
+  .p-num {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--color-ai-mid);
+    letter-spacing: 0.08em;
+  }
+
+  .p-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .p-title {
+    font-family: var(--font-sans);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    line-height: 1.25;
+  }
+
+  .p-text {
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.5;
+    color: var(--color-text-muted);
   }
 
   /* === Comparison card ================================================ */

@@ -110,14 +110,25 @@
     if (!last) return;
 
     const { y: lastTopY } = offsetWithin(last, rootEl);
-    const elemBottomWorldY = lastTopY + last.offsetHeight;
-    const viewportWorldHeight = camera.viewportHeight / camera.zoom;
+    const elemHeight = last.offsetHeight;
+    const elemBottomWorldY = lastTopY + elemHeight;
+    const vpH = camera.viewportHeight / camera.zoom;
 
-    const anchor = 0.85;
-    const desiredCameraY = elemBottomWorldY - viewportWorldHeight * (anchor - 0.5);
+    // Bottom anchor at 0.72 reserves clear space above the nav bar
+    // that sits fixed at the bottom of the viewport. Top anchor flip
+    // applies when an element is too tall to fit comfortably between
+    // the two.
+    const topAnchor = 0.12;
+    const bottomAnchor = 0.72;
+    const maxComfortableHeight = vpH * (bottomAnchor - topAnchor);
 
-    const minY = viewportWorldHeight / 2;
-    const maxY = Math.max(minY, seg.height - viewportWorldHeight / 2);
+    const desiredCameraY =
+      elemHeight <= maxComfortableHeight
+        ? elemBottomWorldY - vpH * (bottomAnchor - 0.5)
+        : lastTopY + vpH * (0.5 - topAnchor);
+
+    const minY = vpH / 2;
+    const maxY = Math.max(minY, seg.height - vpH / 2);
     const y = Math.max(minY, Math.min(maxY, desiredCameraY));
 
     if (Math.abs(y - camera.y) < 2) return;
@@ -1004,7 +1015,7 @@ continue without compression or reset.)`,
   }
 
   .tail-spacer {
-    height: 240px;
+    height: 320px;
   }
 
   /* ====================================================================

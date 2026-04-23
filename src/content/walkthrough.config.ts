@@ -20,6 +20,9 @@ const CARE_FOOT = 'care-footprint';
 const CARE_CTX = 'care-context';
 const CARE_WRONG = 'care-wrong';
 const CARE_AGREE = 'care-agreement';
+const CARE_VIS = 'care-visual-gap';
+const KEY = 'key-learnings';
+const RES = 'resources';
 
 export const presentationConfig: PresentationConfig = {
   name: 'AI for Interactive Media',
@@ -291,51 +294,116 @@ export const presentationConfig: PresentationConfig = {
 
     // ==============================
     // Segment 11: Where care is required (overview of the closing cluster)
+    // Groups revealed in walk order: mechanical -> legal -> ethical -> closer.
     // ==============================
     {
       segmentId: CARE,
       steps: [
-        { id: 'w01', type: 'advance', segmentId: CARE, label: 'Legal + ownership group' },
-        { id: 'w02', type: 'advance', segmentId: CARE, label: 'Ethical practice group' },
-        { id: 'w03', type: 'advance', segmentId: CARE, label: 'Mechanical limits group' },
+        { id: 'w01', type: 'advance', segmentId: CARE, label: 'Mechanical limits group' },
+        { id: 'w02', type: 'advance', segmentId: CARE, label: 'Legal + ownership group' },
+        { id: 'w03', type: 'advance', segmentId: CARE, label: 'Ethical practice group' },
         { id: 'w04', type: 'advance', segmentId: CARE, label: 'Closer' },
       ],
     },
 
     // ==============================
-    // Segment 12: What went in (training data, indemnity, Getty)
+    // Segment 12: Confidently wrong (mechanical limit)
     // ==============================
     {
-      segmentId: CARE_TRAIN,
+      segmentId: CARE_WRONG,
       steps: [
-        { id: 'tr01', type: 'advance', segmentId: CARE_TRAIN, label: 'User: where did it come from?' },
-        { id: 'tr02', type: 'advance', segmentId: CARE_TRAIN, label: 'Training reality' },
-        { id: 'tr03', type: 'advance', segmentId: CARE_TRAIN, label: 's.29A CDPA source card' },
-        { id: 'tr04', type: 'advance', segmentId: CARE_TRAIN, label: 'Getty v Stability AI' },
-        { id: 'tr05', type: 'advance', segmentId: CARE_TRAIN, label: 'Using vs training' },
-        { id: 'tr06', type: 'advance', segmentId: CARE_TRAIN, label: 'Indemnity table' },
-        { id: 'tr07', type: 'advance', segmentId: CARE_TRAIN, label: 'Adobe Firefly note' },
-        { id: 'tr08', type: 'advance', segmentId: CARE_TRAIN, label: 'Closer: rules of thumb' },
+        { id: 'cw01', type: 'advance', segmentId: CARE_WRONG, label: 'User: surely thinking fixes it?' },
+        { id: 'cw02', type: 'advance', segmentId: CARE_WRONG, label: 'Obvious failure: layout looks fine' },
+        { id: 'cw03', type: 'advance', segmentId: CARE_WRONG, label: 'Why fluency deceives' },
+        { id: 'cw04', type: 'advance', segmentId: CARE_WRONG, label: 'Subtle failure: accessibility' },
+        { id: 'cw05', type: 'advance', segmentId: CARE_WRONG, label: 'Mitigation rules' },
+        { id: 'cw06', type: 'advance', segmentId: CARE_WRONG, label: 'Closer: the one reliable signal' },
       ],
     },
 
     // ==============================
-    // Segment 13: Who owns this? (copyrightability + authorship)
+    // Segment 13: The agreement trap (mechanical limit)
+    // ==============================
+    {
+      segmentId: CARE_AGREE,
+      steps: [
+        { id: 'ag01', type: 'advance', segmentId: CARE_AGREE, label: 'User: why does it always agree?' },
+        { id: 'ag02', type: 'advance', segmentId: CARE_AGREE, label: 'Failure in slow motion' },
+        { id: 'ag03', type: 'advance', segmentId: CARE_AGREE, label: 'Why this happens' },
+        { id: 'ag04', type: 'advance', segmentId: CARE_AGREE, label: 'Three practices (compact)' },
+        { id: 'ag05', type: 'advance', segmentId: CARE_AGREE, label: 'Memory-file example' },
+        { id: 'ag06', type: 'advance', segmentId: CARE_AGREE, label: 'Default vs critical comparison' },
+        { id: 'ag07', type: 'advance', segmentId: CARE_AGREE, label: 'Closer: agreement is cheap' },
+      ],
+    },
+
+    // ==============================
+    // Segment 14: The visual gap (mechanical limit)
+    // Observation is not experience; code loops close, visual loops don't.
+    // ==============================
+    {
+      segmentId: CARE_VIS,
+      steps: [
+        { id: 'vg01', type: 'advance', segmentId: CARE_VIS, label: 'User: can it see what it builds?' },
+        { id: 'vg02', type: 'advance', segmentId: CARE_VIS, label: 'What it can observe (incl. autopilot)' },
+        { id: 'vg03', type: 'advance', segmentId: CARE_VIS, label: 'What sampling misses' },
+        { id: 'vg04', type: 'advance', segmentId: CARE_VIS, label: 'Code loop vs visual loop' },
+        { id: 'vg05', type: 'advance', segmentId: CARE_VIS, label: 'Workflow rubric' },
+        { id: 'vg06', type: 'advance', segmentId: CARE_VIS, label: 'Closer: the visual call is human' },
+      ],
+    },
+
+    // ==============================
+    // Segment 15: Copyright (use, traps, indemnity)
+    // ==============================
+    {
+      segmentId: CARE_TRAIN,
+      steps: [
+        { id: 'tr01', type: 'advance', segmentId: CARE_TRAIN, label: 'User: am I stealing someone\'s work?' },
+        { id: 'tr02', type: 'advance', segmentId: CARE_TRAIN, label: 'How training works + "stealing" debate' },
+        { id: 'tr03', type: 'advance', segmentId: CARE_TRAIN, label: 'Copyright in one card' },
+        { id: 'tr04', type: 'advance', segmentId: CARE_TRAIN, label: 'Three zones of use' },
+        { id: 'tr05', type: 'advance', segmentId: CARE_TRAIN, label: 'Three traps to avoid' },
+        { id: 'tr06', type: 'advance', segmentId: CARE_TRAIN, label: 'Indemnity table' },
+        { id: 'tr07', type: 'advance', segmentId: CARE_TRAIN, label: 'Closer: practices' },
+      ],
+    },
+
+    // ==============================
+    // Segment 16: Ownership (is it defensibly yours?)
     // ==============================
     {
       segmentId: CARE_OWN,
       steps: [
         { id: 'ow01', type: 'advance', segmentId: CARE_OWN, label: 'User: is it mine?' },
         { id: 'ow02', type: 'advance', segmentId: CARE_OWN, label: 'Three scenarios' },
-        { id: 'ow03', type: 'advance', segmentId: CARE_OWN, label: 'The test: Infopaq / THJ v Sheridan' },
-        { id: 'ow04', type: 'advance', segmentId: CARE_OWN, label: 's.9(3) repeal proposed' },
-        { id: 'ow05', type: 'advance', segmentId: CARE_OWN, label: 'Decision rubric' },
-        { id: 'ow06', type: 'advance', segmentId: CARE_OWN, label: 'Closer: the principle' },
+        { id: 'ow03', type: 'advance', segmentId: CARE_OWN, label: 'The question: did YOU do the thinking?' },
+        { id: 'ow04', type: 'advance', segmentId: CARE_OWN, label: 'Decision rubric' },
+        { id: 'ow05', type: 'advance', segmentId: CARE_OWN, label: 'Closer: your hands on the work' },
       ],
     },
 
     // ==============================
-    // Segment 14: Name your collaborators (attribution + transparency)
+    // Segment 16: What you put in (ethics of context engineering)
+    // Opens the Ethical Practice arc.
+    // ==============================
+    {
+      segmentId: CARE_CTX,
+      steps: [
+        { id: 'cx01', type: 'advance', segmentId: CARE_CTX, label: 'User: what can I feed it?' },
+        { id: 'cx02', type: 'advance', segmentId: CARE_CTX, label: 'Every query leaves your machine (the fact underneath)' },
+        { id: 'cx03', type: 'advance', segmentId: CARE_CTX, label: 'Three zones' },
+        { id: 'cx04', type: 'advance', segmentId: CARE_CTX, label: '"Your own" is a permission, not a blank cheque' },
+        { id: 'cx05', type: 'advance', segmentId: CARE_CTX, label: 'The "never" zone is non-negotiable' },
+        { id: 'cx06', type: 'advance', segmentId: CARE_CTX, label: 'Trap setup: the intuitive workaround' },
+        { id: 'cx07', type: 'advance', segmentId: CARE_CTX, label: 'The trap revealed' },
+        { id: 'cx08', type: 'advance', segmentId: CARE_CTX, label: 'Thesis scenario' },
+        { id: 'cx09', type: 'advance', segmentId: CARE_CTX, label: 'Closer: filter at the source' },
+      ],
+    },
+
+    // ==============================
+    // Segment 17: Name your collaborators (attribution + transparency)
     // ==============================
     {
       segmentId: CARE_ATTR,
@@ -346,14 +414,16 @@ export const presentationConfig: PresentationConfig = {
         { id: 'at04', type: 'advance', segmentId: CARE_ATTR, label: 'D&AD 2026 disclosure' },
         { id: 'at05', type: 'advance', segmentId: CARE_ATTR, label: 'Named-collaborator frame' },
         { id: 'at06', type: 'advance', segmentId: CARE_ATTR, label: 'IPA/ISBA Principle 11' },
-        { id: 'at07', type: 'advance', segmentId: CARE_ATTR, label: 'Live audit-log demo' },
-        { id: 'at08', type: 'advance', segmentId: CARE_ATTR, label: 'Closer' },
+        { id: 'at07', type: 'advance', segmentId: CARE_ATTR, label: 'How this talk was built (did / did-not)' },
+        { id: 'at08', type: 'advance', segmentId: CARE_ATTR, label: 'Transparency I set up for you' },
+        { id: 'at09', type: 'advance', segmentId: CARE_ATTR, label: 'Closer' },
       ],
     },
 
     // ==============================
-    // Segment 15: The audit, live - interactive timeline viewer.
-    // No internal progression; the presenter drives the demo with mouse.
+    // Segment 18: The audit, live - interactive timeline viewer.
+    // Concludes the attribution arc. No internal progression; the presenter
+    // drives the demo with mouse.
     // ==============================
     {
       segmentId: CARE_AUDIT,
@@ -361,7 +431,8 @@ export const presentationConfig: PresentationConfig = {
     },
 
     // ==============================
-    // Segment 16: The audit, quantified (hero stats + leverage ratio + env hero)
+    // Segment 19: The audit, quantified (hero stats + leverage ratio + env hero)
+    // Segues into the environment impact beat of the Ethical arc.
     // ==============================
     {
       segmentId: CARE_NUMS,
@@ -378,66 +449,51 @@ export const presentationConfig: PresentationConfig = {
     },
 
     // ==============================
-    // Segment 17: Environmental footprint (honest breakdown + caveats)
+    // Segment 20: Environmental footprint (honest breakdown + caveats)
+    // Closes the Ethical arc and the whole care cluster.
     // ==============================
     {
       segmentId: CARE_FOOT,
       steps: [
         { id: 'cf01', type: 'advance', segmentId: CARE_FOOT, label: 'User: is that the whole story?' },
-        { id: 'cf02', type: 'advance', segmentId: CARE_FOOT, label: 'Activity breakdown' },
-        { id: 'cf03', type: 'advance', segmentId: CARE_FOOT, label: 'Comparison ladder' },
-        { id: 'cf04', type: 'advance', segmentId: CARE_FOOT, label: 'Vendor vs peer-reviewed' },
-        { id: 'cf05', type: 'advance', segmentId: CARE_FOOT, label: 'Training vs inference flip' },
-        { id: 'cf06', type: 'advance', segmentId: CARE_FOOT, label: 'Aggregate scale-up' },
-        { id: 'cf07', type: 'advance', segmentId: CARE_FOOT, label: 'Caveats' },
-        { id: 'cf08', type: 'advance', segmentId: CARE_FOOT, label: 'Closer: the right question' },
+        { id: 'cf02', type: 'advance', segmentId: CARE_FOOT, label: 'Methodology primer: how energy per token is counted' },
+        { id: 'cf03', type: 'advance', segmentId: CARE_FOOT, label: 'Vendor vs peer-reviewed (set scope bar early)' },
+        { id: 'cf04', type: 'advance', segmentId: CARE_FOOT, label: 'Activity breakdown' },
+        { id: 'cf05', type: 'advance', segmentId: CARE_FOOT, label: 'Comparison ladder' },
+        { id: 'cf06', type: 'advance', segmentId: CARE_FOOT, label: 'Training vs inference flip' },
+        { id: 'cf07', type: 'advance', segmentId: CARE_FOOT, label: 'Aggregate scale-up' },
+        { id: 'cf08', type: 'advance', segmentId: CARE_FOOT, label: 'Caveats' },
+        { id: 'cf09', type: 'advance', segmentId: CARE_FOOT, label: 'Closer: the right question' },
       ],
     },
 
     // ==============================
-    // Segment 18: What you put in (ethics of context engineering)
+    // Segment 22: Key learnings (closing segment)
+    // Three meta-skills that travel anywhere: leadership, delegation,
+    // information management. Opens the talk outward at the end.
     // ==============================
     {
-      segmentId: CARE_CTX,
+      segmentId: KEY,
       steps: [
-        { id: 'cx01', type: 'advance', segmentId: CARE_CTX, label: 'User: what can I feed it?' },
-        { id: 'cx02', type: 'advance', segmentId: CARE_CTX, label: 'Three zones' },
-        { id: 'cx03', type: 'advance', segmentId: CARE_CTX, label: '"Your own" is a permission, not a blank cheque' },
-        { id: 'cx04', type: 'advance', segmentId: CARE_CTX, label: 'The "never" zone is non-negotiable' },
-        { id: 'cx05', type: 'advance', segmentId: CARE_CTX, label: 'Trap setup: the intuitive workaround' },
-        { id: 'cx06', type: 'advance', segmentId: CARE_CTX, label: 'The trap revealed' },
-        { id: 'cx07', type: 'advance', segmentId: CARE_CTX, label: 'Thesis scenario' },
-        { id: 'cx08', type: 'advance', segmentId: CARE_CTX, label: 'Closer: filter at the source' },
+        { id: 'kl01', type: 'advance', segmentId: KEY, label: 'User: what should I take away?' },
+        { id: 'kl02', type: 'advance', segmentId: KEY, label: 'Skill 01: Leadership' },
+        { id: 'kl03', type: 'advance', segmentId: KEY, label: 'Skill 02: Delegation' },
+        { id: 'kl04', type: 'advance', segmentId: KEY, label: 'Skill 03: Information management' },
+        { id: 'kl05', type: 'advance', segmentId: KEY, label: 'Punchline: this was never about AI' },
       ],
     },
 
     // ==============================
-    // Segment 16: Confidently wrong (mechanical limit)
+    // Segment 23: Useful resources (appendix)
+    // York policy + three tools + public repo. All clickable external links.
     // ==============================
     {
-      segmentId: CARE_WRONG,
+      segmentId: RES,
       steps: [
-        { id: 'cw01', type: 'advance', segmentId: CARE_WRONG, label: 'User: surely thinking fixes it?' },
-        { id: 'cw02', type: 'advance', segmentId: CARE_WRONG, label: 'Obvious failure: layout looks fine' },
-        { id: 'cw03', type: 'advance', segmentId: CARE_WRONG, label: 'Why fluency deceives' },
-        { id: 'cw04', type: 'advance', segmentId: CARE_WRONG, label: 'Subtle failure: accessibility' },
-        { id: 'cw05', type: 'advance', segmentId: CARE_WRONG, label: 'Mitigation rules' },
-        { id: 'cw06', type: 'advance', segmentId: CARE_WRONG, label: 'Closer: the one reliable signal' },
-      ],
-    },
-
-    // ==============================
-    // Segment 17: The agreement trap (mechanical limit)
-    // ==============================
-    {
-      segmentId: CARE_AGREE,
-      steps: [
-        { id: 'ag01', type: 'advance', segmentId: CARE_AGREE, label: 'User: why does it always agree?' },
-        { id: 'ag02', type: 'advance', segmentId: CARE_AGREE, label: 'Failure in slow motion' },
-        { id: 'ag03', type: 'advance', segmentId: CARE_AGREE, label: 'Why this happens' },
-        { id: 'ag04', type: 'advance', segmentId: CARE_AGREE, label: 'System prompt example' },
-        { id: 'ag05', type: 'advance', segmentId: CARE_AGREE, label: 'Default vs critical comparison' },
-        { id: 'ag06', type: 'advance', segmentId: CARE_AGREE, label: 'Closer: agreement is cheap' },
+        { id: 'rs01', type: 'advance', segmentId: RES, label: 'User: where should I start?' },
+        { id: 'rs02', type: 'advance', segmentId: RES, label: 'York AI policy' },
+        { id: 'rs03', type: 'advance', segmentId: RES, label: 'Three tools: VS Code, Git, Obsidian' },
+        { id: 'rs04', type: 'advance', segmentId: RES, label: 'Public repo' },
       ],
     },
   ],

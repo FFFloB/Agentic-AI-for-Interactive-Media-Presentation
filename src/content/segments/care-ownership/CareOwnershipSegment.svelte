@@ -16,9 +16,9 @@
   const railTopY = $derived(viewportTopY + 120);
 
   const takeaways = [
-    { at: 2, text: 'Human creative input earns you copyright in the UK. Writing a prompt alone does not.' },
-    { at: 3, text: 'The test is already in UK law: the "author\'s own intellectual creation" standard. It asks for your personal touch, not prompt length.' },
-    { at: 5, text: 'The direction of travel favours AI-assisted work with real human input. Build the habit now, you\'re safe whichever way the rules move.' },
+    { at: 2, text: 'Human creative input earns you copyright. A prompt alone does not.' },
+    { at: 3, text: 'The question is simple: did YOU do the creative thinking? Everything else follows from that.' },
+    { at: 5, text: 'Your personal touch is what makes the work yours. Now more than ever.' },
   ];
   const takeawaysActive = $derived(careOwnershipStage.reveal(takeaways[0].at));
 
@@ -72,7 +72,7 @@
       tag: 's.9(3) CDPA',
       verdict: 'Computer-generated work with no human author',
       term: '50-year term · "author" = arranger',
-      body: 'A 1988 UK oddity, written with procedurally generated maps in mind. Never authoritatively tested against a modern prompt-to-image model. The March 2026 government report proposes removing it. Live law, politically shaky.',
+      body: 'A 1988 UK oddity, originally written for procedurally generated maps. Never properly tested against modern AI output. The direction the law is moving will likely remove it - not worth relying on.',
     },
     {
       tone: 'bad' as const,
@@ -108,11 +108,11 @@
 
   <header class="segment-header">
     <span class="eyebrow">Legal · Ownership</span>
-    <h1 class="headline-gradient">Who owns this?</h1>
+    <h1 class="headline-gradient">Ownership</h1>
     <p class="subhead">
-      Whether what you ship is really yours turns on one question: did
-      you do the creative thinking? UK law is already clear about this,
-      even if the statute around it is in motion.
+      Whether what you ship is really yours turns on one question:
+      did you do the creative thinking? The harder you lean on the
+      tool, the weaker your claim.
     </p>
   </header>
 
@@ -146,20 +146,25 @@
       </div>
     {/if}
 
-    <!-- Stage 3 - the test that decides [TAKEAWAY 2] -->
+    <!-- Stage 3 - the test, plain [TAKEAWAY 2] -->
     {#if careOwnershipStage.reveal(3)}
       <div class="source-card" data-staged="true">
         <div class="sc-head">
-          <span class="sc-badge">The test</span>
-          <span class="sc-citation">Infopaq · re-affirmed in THJ v Sheridan [2023]</span>
+          <span class="sc-badge">The question</span>
+          <span class="sc-citation">UK originality standard</span>
         </div>
-        <div class="sc-title">Author's own intellectual creation.</div>
+        <div class="sc-title">Did YOU do the creative thinking?</div>
         <p class="sc-body">
-          The UK originality threshold for copyright is the EU-derived
-          "author's own intellectual creation" standard. It asks for
-          expressive choices reflecting your personal touch - not
-          skill, labour, or technical effort. Arnold LJ re-confirmed
-          this in <em>THJ v Sheridan</em> in 2023.
+          Copyright rewards human creative choice. That's the whole
+          test. The law calls this the "author's own intellectual
+          creation" standard, but you do not need the jargon - it
+          just asks whether expressive decisions in the work are
+          yours.
+        </p>
+        <p class="sc-footnote">
+          If you want the formal sources: the standard is the
+          EU-derived Infopaq test, re-affirmed for the UK by Arnold
+          LJ in <em>THJ v Sheridan</em> (2023).
         </p>
         <div class="sc-meaning">
           <span class="sm-label">What this means for your work</span>
@@ -176,37 +181,8 @@
       </div>
     {/if}
 
-    <!-- Stage 4 - what's moving -->
+    <!-- Stage 4 - decision rubric -->
     {#if careOwnershipStage.reveal(4)}
-      <div class="source-card" data-staged="true">
-        <div class="sc-head">
-          <span class="sc-badge">Moving target</span>
-          <span class="sc-citation">UK Gov · Report on Copyright and AI, 18 March 2026</span>
-        </div>
-        <div class="sc-title">s.9(3) is proposed for repeal.</div>
-        <p class="sc-body">
-          The government's March 2026 report proposes removing section
-          9(3) CDPA - the 1988 provision that confers a 50-year
-          "computer-generated works" copyright. The logic: keep
-          protection for AI-assisted work with genuine human
-          contribution; stop pretending prompt-only output has a
-          meaningful author.
-        </p>
-        <div class="sc-meaning">
-          <span class="sm-label">What this means for you</span>
-          <p class="sm-body-p">
-            No legislation yet, but the direction of travel is clear.
-            The prompt-and-accept path is being closed off. The
-            AI-assisted path, where you do real creative work on top
-            of generated material, is the one the law is moving to
-            protect.
-          </p>
-        </div>
-      </div>
-    {/if}
-
-    <!-- Stage 5 - decision rubric [TAKEAWAY 3] -->
-    {#if careOwnershipStage.reveal(5)}
       <div class="rubric-card" data-staged="true">
         <div class="rc-head">
           <span class="rc-badge">Decision rubric</span>
@@ -250,16 +226,22 @@
       </div>
     {/if}
 
-    <!-- Stage 6 - closer -->
-    {#if careOwnershipStage.reveal(6)}
+    <!-- Stage 5 - closer [TAKEAWAY 3] -->
+    {#if careOwnershipStage.reveal(5)}
       <div class="closer" data-staged="true">
-        <div class="cl-label">The principle that survives the statute</div>
+        <div class="cl-label">Your hands on the work - more than ever</div>
         <p class="cl-body">
-          Copyright law rewards human creative thinking. That
-          principle has been steady through every technology change
-          for the last century, and it is not changing for this one.
-          You are the author only if you did the thinking. Do the
-          thinking, and the statute can move without moving you.
+          Your personal, human touch, and your role in shaping the
+          product, are what make the work yours. Now more than ever.
+          Do not get lazy. Do not over-delegate. Make it yours -
+          something you can look another person in the eye and call
+          your creation.
+        </p>
+        <p class="cl-body">
+          Your drive, your ambition, your vision, your skill, your
+          knowledge of the craft and of the people you are making
+          this for - these are not just what make the work good.
+          They are what make it defensibly, demonstrably yours.
         </p>
       </div>
     {/if}
@@ -509,9 +491,19 @@
     color: var(--color-text-muted);
   }
 
-  .source-card .sc-body em {
+  .sc-footnote {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-text-subtle);
+    padding: 10px 14px;
+    border-left: 2px solid var(--color-border);
+  }
+
+  .sc-footnote em {
     font-style: italic;
-    color: var(--color-ai-mid);
+    color: var(--color-text-muted);
   }
 
   .sc-meaning {
@@ -536,13 +528,6 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
-
-  .sm-body-p {
-    margin: 0;
-    font-size: 22px;
-    line-height: 1.5;
-    color: var(--color-text);
   }
 
   .sm-line {
@@ -743,6 +728,10 @@
     font-size: 26px;
     line-height: 1.5;
     color: var(--color-text);
+  }
+
+  .cl-body + .cl-body {
+    margin-top: 14px;
   }
 
   /* === Takeaways rail ================================================ */

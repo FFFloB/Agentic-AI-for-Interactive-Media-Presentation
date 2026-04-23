@@ -1,10 +1,11 @@
 import type { StageController } from '$lib/types';
 
-// "The agreement trap" - mechanical limit. AI tries to please;
-// style-prompt pushback back in.
+// "The agreement trap" - mechanical limit. Seven stages: framing ->
+// failure in slow motion -> why -> three practices (compact) ->
+// memory-file example -> default vs critical comparison -> closer.
 class CareAgreementStage implements StageController {
   stageIndex = $state(0);
-  readonly maxStage = 6;
+  readonly maxStage = 7;
 
   advance(): boolean {
     if (this.stageIndex < this.maxStage) {
