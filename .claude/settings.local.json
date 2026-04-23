@@ -1,0 +1,99 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init:*)",
+      "Bash(git:*)",
+      "Bash(ls:*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(find C:\\\\Users\\\\flori\\\\Code\\\\AI for Interactive Media \\(Presentation\\):*)",
+      "WebSearch",
+      "WebFetch(domain:svelte.dev)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:mainmatter.com)",
+      "Bash(npm install:*)",
+      "Bash(npm view:*)",
+      "Bash(npx vite:*)",
+      "Bash(npx svelte-check:*)",
+      "WebFetch(domain:code.visualstudio.com)",
+      "WebFetch(domain:obsidian.md)",
+      "Bash(curl -sS -L -o git.png \"https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png\")",
+      "Read(//c/c/Users/flori/Code/AI for Interactive Media \\(Presentation\\)/public/logos/**)",
+      "Bash(curl -sS -L -o vscode.png \"https://code.visualstudio.com/assets/branding/code-stable.png\")",
+      "Bash(curl -sS -L -o obsidian.svg \"https://obsidian.md/images/obsidian-logo-gradient.svg\")",
+      "Bash(npm run *)",
+      "Bash(mkdir -p src/assets/logos)",
+      "Bash(mv public/logos/* src/assets/logos/)",
+      "Bash(rmdir public/logos)",
+      "Bash(jobs *)",
+      "Bash(powershell.exe -NoProfile -Command \"Get-CimInstance Win32_Process -Filter \\\\\"Name='node.exe' OR Name='cmd.exe' OR Name='bash.exe'\\\\\" | Select-Object ProcessId, Name, CommandLine | Format-List\")",
+      "Bash(curl *)",
+      "Bash(grep -v \"^$\")",
+      "Bash(powershell.exe -Command \"Get-NetTCPConnection -LocalPort 5180 -ErrorAction SilentlyContinue | Select-Object -First 2 LocalAddress, LocalPort, OwningProcess, State\")",
+      "Bash(powershell.exe -Command 'Get-NetTCPConnection -LocalPort 5180 -State Listen -ErrorAction SilentlyContinue | Select-Object LocalAddress, LocalPort, OwningProcess | Format-Table -AutoSize; Write-Host '\\\\''---process---'\\\\''; Get-NetTCPConnection -LocalPort 5180 -State Listen -ErrorAction SilentlyContinue | ForEach-Object { Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue | Select-Object Id, ProcessName, Path | Format-List }')",
+      "Bash(powershell.exe -Command \"Stop-Process -Id 67884 -Force; Start-Sleep -Milliseconds 500; if \\(Get-NetTCPConnection -LocalPort 5180 -State Listen -ErrorAction SilentlyContinue\\) { Write-Host 'still listening' } else { Write-Host 'port 5180 clear' }\")"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -fsS -m 1 -X POST http://127.0.0.1:7321/status/working > /dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -fsS -m 1 -X POST http://127.0.0.1:7321/status/ready > /dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/notify-status.mjs\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -fsS -m 1 -X POST http://127.0.0.1:7321/status/working > /dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "curl -fsS -m 1 -X POST http://127.0.0.1:7321/status/working > /dev/null 2>&1 || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}
